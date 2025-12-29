@@ -4,37 +4,27 @@ import { toast } from "@/hooks/use-toast";
 import type { Database } from "@/integrations/supabase/types";
 
 type BookingStatus = Database['public']['Enums']['booking_status'];
+type BookingRow = Database['public']['Tables']['bookings']['Row'];
 
-interface Booking {
-  id: string;
-  owner_id: string;
-  walker_id: string | null;
-  dog_id: string;
-  scheduled_date: string;
-  scheduled_time: string;
-  duration_minutes: number | null;
-  price: number | null;
-  status: BookingStatus | null;
-  service_type: string;
-  notes: string | null;
-  created_at: string | null;
-  dogs?: {
-    name: string;
-    breed: string | null;
-    photo_url: string | null;
-  } | null;
-  owner?: {
-    first_name: string | null;
-    avatar_url: string | null;
-    city: string | null;
-    phone: string | null;
-  } | null;
-  walker?: {
-    first_name: string | null;
-    avatar_url: string | null;
-    city: string | null;
-  } | null;
-}
+type DogSummary = {
+  name: string;
+  breed: string | null;
+  photo_url: string | null;
+};
+
+type ProfileSummary = {
+  first_name: string | null;
+  avatar_url: string | null;
+  city: string | null;
+};
+
+type OwnerSummary = ProfileSummary & { phone: string | null };
+
+type BookingWithRelations = BookingRow & {
+  dogs?: DogSummary | null;
+  owner?: OwnerSummary | null;
+  walker?: ProfileSummary | null;
+};
 
 interface UseRealtimeBookingsProps {
   userId?: string;
@@ -43,7 +33,7 @@ interface UseRealtimeBookingsProps {
 }
 
 export const useRealtimeBookings = ({ userId, role = 'owner', status }: UseRealtimeBookingsProps) => {
-  const [bookings, setBookings] = useState<Booking[]>([]);
+  const [bookings, setBookings] = useState<BookingWithRelations[]>([]);
   const [loading, setLoading] = useState(true);
 
   const fetchBookings = useCallback(async () => {
@@ -79,13 +69,18 @@ export const useRealtimeBookings = ({ userId, role = 'owner', status }: UseRealt
           : { data: [] }
       ]);
 
-      const walkerMap = new Map(walkersResult.data?.map(w => [w.id, w]) || []);
-      const ownerMap = new Map(ownersResult.data?.map(o => [o.id, o]) || []);
+      const walkerMap = new Map<string, ProfileSummary>(
+        (walkersResult.data || []).map((w: any) => [w.id as string, w] as [string, ProfileSummary])
+      );
+      const ownerMap = new Map<string, OwnerSummary>(
+        (ownersResult.data || []).map((o: any) => [o.id as string, o] as [string, OwnerSummary])
+      );
 
-      const enrichedBookings: Booking[] = data.map(b => ({
-        ...b,
+      const enrichedBookings: BookingWithRelations[] = (data as any[]).map((b: any) => ({
+        ...(b as BookingRow),
+        dogs: b.dogs ?? null,
         walker: b.walker_id ? walkerMap.get(b.walker_id) || null : null,
-        owner: ownerMap.get(b.owner_id) || null
+        owner: ownerMap.get(b.owner_id) || null,
       }));
 
       setBookings(enrichedBookings);
@@ -132,9 +127,12 @@ export const useRealtimeBookings = ({ userId, role = 'owner', status }: UseRealt
     return true;
   };
 
-  const getUpcoming = () => bookings.filter(
-    b => new Date(b.scheduled_date) >= new Date() && !['cancelled', 'completed'].includes(b.status || '')
-  );
+  const getUpcoming = () => {
+    const excluded: BookingStatus[] = ['cancelled', 'completed'];
+    return bookings.filter(
+      b => new Date(b.scheduled_date) >= new Date() && !excluded.includes(b.status || 'pending')
+    );
+  };
 
   const getPending = () => bookings.filter(b => b.status === 'pending');
   const getCompleted = () => bookings.filter(b => b.status === 'completed');
