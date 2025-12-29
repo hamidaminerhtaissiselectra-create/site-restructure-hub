@@ -1,7 +1,7 @@
-import { useState, useCallback } from "react";
+import { useState, useCallback, useEffect } from "react";
 import { supabase } from "@/integrations/supabase/client";
 
-interface MatchingCriteria {
+export interface MatchingCriteria {
   ownerLat?: number;
   ownerLng?: number;
   ownerCity?: string;
@@ -10,6 +10,8 @@ interface MatchingCriteria {
   preferredDays?: string[];
   preferredTime?: string;
   maxBudget?: number;
+  preferVerified?: boolean;
+  minRating?: number;
 }
 
 interface WalkerWithScore {
@@ -51,7 +53,7 @@ const calculateDistance = (lat1: number, lng1: number, lat2: number, lng2: numbe
   return R * c;
 };
 
-export const useWalkerMatching = () => {
+export const useWalkerMatching = (initialCriteria?: MatchingCriteria) => {
   const [loading, setLoading] = useState(false);
   const [matchedWalkers, setMatchedWalkers] = useState<WalkerWithScore[]>([]);
 
@@ -220,8 +222,16 @@ export const useWalkerMatching = () => {
     return matchedWalkers.find(w => w.user_id === userId);
   }, [matchedWalkers]);
 
+  // Auto-fetch when criteria provided
+  useEffect(() => {
+    if (initialCriteria) {
+      findMatches(initialCriteria);
+    }
+  }, []);
+
   return {
     loading,
+    isLoading: loading,
     matchedWalkers,
     findMatches,
     getTopMatches,

@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { Header } from "@/components/ui/header";
 import { Footer } from "@/components/ui/footer";
 import { Card, CardContent } from "@/components/ui/card";
@@ -11,96 +12,22 @@ import { motion } from "framer-motion";
 import { AnimatedCard, AnimatedGrid, AnimatedGridItem } from "@/components/ui/animated-card";
 import { AnimatedIcon } from "@/components/ui/animated-icon";
 import { SectionHeader } from "@/components/ui/section-header";
+import { Link } from "react-router-dom";
 import blogHero from "@/assets/pages/blog-hero.jpg";
-
-const staggerContainer = {
-  hidden: {},
-  visible: { transition: { staggerChildren: 0.1 } }
-};
+import { blogArticles, blogCategories, getFeaturedArticle, getArticlesByCategory } from "@/data/blogData";
 
 const Blog = () => {
-  const featuredArticle = {
-    title: "Guide complet : Bien préparer son chien pour sa première promenade avec un professionnel",
-    excerpt: "Découvrez toutes nos astuces et conseils pour que la première expérience de votre chien avec un promeneur professionnel soit une réussite totale. De la préparation psychologique à la communication avec le promeneur, nous vous guidons pas à pas pour une transition en douceur.",
-    date: "28 Nov 2024",
-    author: "Dr. Sophie Martin",
-    category: "Guides",
-    readTime: "8 min",
-    image: "https://images.unsplash.com/photo-1587300003388-59208cc962cb?w=800&h=400&fit=crop"
-  };
-
-  const articles = [
-    {
-      title: "Comment choisir le bon promeneur pour votre chien",
-      excerpt: "Découvrez nos conseils pour trouver le promeneur idéal qui correspondra parfaitement aux besoins spécifiques de votre compagnon...",
-      date: "25 Nov 2024",
-      author: "Marie L.",
-      category: "Conseils",
-      readTime: "5 min",
-      image: "https://images.unsplash.com/photo-1601758228041-f3b2795255f1?w=400&h=250&fit=crop",
-      color: "primary" as const
-    },
-    {
-      title: "Les bienfaits des promenades quotidiennes sur la santé",
-      excerpt: "Pourquoi les promenades régulières sont essentielles pour la santé physique et mentale de votre chien et comment optimiser chaque sortie...",
-      date: "20 Nov 2024",
-      author: "Thomas B.",
-      category: "Santé",
-      readTime: "6 min",
-      image: "https://images.unsplash.com/photo-1548199973-03cce0bbc87b?w=400&h=250&fit=crop",
-      color: "accent" as const
-    },
-    {
-      title: "Socialisation canine : les clés du succès",
-      excerpt: "La socialisation est essentielle pour le développement harmonieux de votre chien. Voici comment la réussir à tout âge...",
-      date: "15 Nov 2024",
-      author: "Dr. Julie R.",
-      category: "Éducation",
-      readTime: "7 min",
-      image: "https://images.unsplash.com/photo-1530281700549-e82e7bf110d6?w=400&h=250&fit=crop",
-      color: "success" as const
-    },
-    {
-      title: "Les signaux d'alerte à surveiller chez votre chien",
-      excerpt: "Apprenez à reconnaître les signes qui indiquent que votre chien pourrait avoir un problème de santé nécessitant une attention...",
-      date: "10 Nov 2024",
-      author: "Dr. Pierre M.",
-      category: "Santé",
-      readTime: "5 min",
-      image: "https://images.unsplash.com/photo-1583511655857-d19b40a7a54e?w=400&h=250&fit=crop",
-      color: "warning" as const
-    },
-    {
-      title: "Activités ludiques pour chiens énergiques",
-      excerpt: "Des idées d'activités stimulantes pour les chiens qui ont besoin de dépenser beaucoup d'énergie au quotidien...",
-      date: "5 Nov 2024",
-      author: "Emma D.",
-      category: "Activités",
-      readTime: "4 min",
-      image: "https://images.unsplash.com/photo-1587300003388-59208cc962cb?w=400&h=250&fit=crop",
-      color: "primary" as const
-    },
-    {
-      title: "Nutrition canine : les bases à connaître",
-      excerpt: "Tout ce que vous devez savoir sur l'alimentation équilibrée de votre chien pour le garder en bonne santé...",
-      date: "1 Nov 2024",
-      author: "Dr. Marc V.",
-      category: "Nutrition",
-      readTime: "8 min",
-      image: "https://images.unsplash.com/photo-1516734212186-a967f81ad0d7?w=400&h=250&fit=crop",
-      color: "accent" as const
-    }
-  ];
-
-  const categories = [
-    { name: "Tous", active: true },
-    { name: "Conseils", active: false },
-    { name: "Santé", active: false },
-    { name: "Éducation", active: false },
-    { name: "Activités", active: false },
-    { name: "Nutrition", active: false },
-    { name: "Guides", active: false }
-  ];
+  const [searchQuery, setSearchQuery] = useState("");
+  const [activeCategory, setActiveCategory] = useState("all");
+  
+  const featuredArticle = getFeaturedArticle();
+  const filteredArticles = getArticlesByCategory(activeCategory)
+    .filter(article => !article.featured)
+    .filter(article => 
+      searchQuery === "" || 
+      article.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      article.excerpt.toLowerCase().includes(searchQuery.toLowerCase())
+    );
 
   return (
     <div className="min-h-screen bg-background">
@@ -178,17 +105,23 @@ const Blog = () => {
           >
             <div className="relative flex-1">
               <Search className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground" />
-              <Input placeholder="Rechercher un article..." className="pl-12 h-12 rounded-xl" />
+              <Input 
+                placeholder="Rechercher un article..." 
+                className="pl-12 h-12 rounded-xl"
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+              />
             </div>
             <div className="flex flex-wrap gap-2">
-              {categories.map((category) => (
-                <motion.div key={category.name} whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+              {blogCategories.map((category) => (
+                <motion.div key={category.slug} whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
                   <Button 
-                    variant={category.active ? "default" : "outline"}
+                    variant={activeCategory === category.slug ? "default" : "outline"}
                     size="sm"
                     className="rounded-full"
+                    onClick={() => setActiveCategory(category.slug)}
                   >
-                    {category.name}
+                    {category.name} ({category.count})
                   </Button>
                 </motion.div>
               ))}
@@ -196,52 +129,56 @@ const Blog = () => {
           </motion.div>
 
           {/* Article à la une animé */}
-          <AnimatedCard className="mb-12 overflow-hidden" glow>
-            <div className="grid md:grid-cols-2">
-              <motion.div 
-                className="h-64 md:h-auto overflow-hidden"
-                whileHover={{ scale: 1.02 }}
-                transition={{ duration: 0.3 }}
-              >
-                <img 
-                  src={featuredArticle.image} 
-                  alt={featuredArticle.title}
-                  className="w-full h-full object-cover"
-                />
-              </motion.div>
-              <div className="p-8 flex flex-col justify-center">
-                <div className="flex items-center gap-2 mb-4">
-                  <Badge className="bg-primary/10 text-primary">
-                    <Sparkles className="h-3 w-3 mr-1" />
-                    À la une
-                  </Badge>
-                  <Badge variant="outline">{featuredArticle.category}</Badge>
+          {featuredArticle && (
+            <AnimatedCard className="mb-12 overflow-hidden" glow>
+              <div className="grid md:grid-cols-2">
+                <motion.div 
+                  className="h-64 md:h-auto overflow-hidden"
+                  whileHover={{ scale: 1.02 }}
+                  transition={{ duration: 0.3 }}
+                >
+                  <img 
+                    src={featuredArticle.image} 
+                    alt={featuredArticle.title}
+                    className="w-full h-full object-cover"
+                  />
+                </motion.div>
+                <div className="p-8 flex flex-col justify-center">
+                  <div className="flex items-center gap-2 mb-4">
+                    <Badge className="bg-primary/10 text-primary">
+                      <Sparkles className="h-3 w-3 mr-1" />
+                      À la une
+                    </Badge>
+                    <Badge variant="outline">{featuredArticle.category}</Badge>
+                  </div>
+                  <h2 className="text-2xl md:text-3xl font-bold mb-4 hover:text-primary transition-colors cursor-pointer">
+                    <Link to={`/blog/${featuredArticle.slug}`}>{featuredArticle.title}</Link>
+                  </h2>
+                  <p className="text-muted-foreground mb-6">{featuredArticle.excerpt}</p>
+                  <div className="flex items-center gap-4 text-sm text-muted-foreground mb-6">
+                    <span className="flex items-center gap-1">
+                      <Calendar className="h-4 w-4 text-primary" />
+                      {new Date(featuredArticle.date).toLocaleDateString('fr-FR', { day: 'numeric', month: 'short', year: 'numeric' })}
+                    </span>
+                    <span className="flex items-center gap-1">
+                      <User className="h-4 w-4 text-accent" />
+                      {featuredArticle.author.name}
+                    </span>
+                    <span className="flex items-center gap-1">
+                      <Clock className="h-4 w-4 text-muted-foreground" />
+                      {featuredArticle.readTime}
+                    </span>
+                  </div>
+                  <Button className="w-fit" asChild>
+                    <Link to={`/blog/${featuredArticle.slug}`}>
+                      Lire l'article
+                      <ArrowRight className="ml-2 h-4 w-4" />
+                    </Link>
+                  </Button>
                 </div>
-                <h2 className="text-2xl md:text-3xl font-bold mb-4 hover:text-primary transition-colors cursor-pointer">
-                  {featuredArticle.title}
-                </h2>
-                <p className="text-muted-foreground mb-6">{featuredArticle.excerpt}</p>
-                <div className="flex items-center gap-4 text-sm text-muted-foreground mb-6">
-                  <span className="flex items-center gap-1">
-                    <Calendar className="h-4 w-4 text-primary" />
-                    {featuredArticle.date}
-                  </span>
-                  <span className="flex items-center gap-1">
-                    <User className="h-4 w-4 text-accent" />
-                    {featuredArticle.author}
-                  </span>
-                  <span className="flex items-center gap-1">
-                    <Clock className="h-4 w-4 text-muted-foreground" />
-                    {featuredArticle.readTime}
-                  </span>
-                </div>
-                <Button className="w-fit">
-                  Lire l'article
-                  <ArrowRight className="ml-2 h-4 w-4" />
-                </Button>
               </div>
-            </div>
-          </AnimatedCard>
+            </AnimatedCard>
+          )}
 
           {/* Section titre articles */}
           <SectionHeader
@@ -252,42 +189,50 @@ const Blog = () => {
           />
 
           {/* Articles grid avec animations */}
-          <AnimatedGrid className="grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" staggerDelay={0.08}>
-            {articles.map((article, index) => (
-              <AnimatedGridItem key={index}>
-                <motion.div whileHover={{ y: -5 }} transition={{ duration: 0.2 }}>
-                  <Card className="overflow-hidden hover:shadow-xl transition-all group cursor-pointer h-full border-2 hover:border-primary/30">
-                    <div className="relative h-48 overflow-hidden">
-                      <motion.img 
-                        src={article.image} 
-                        alt={article.title}
-                        className="w-full h-full object-cover"
-                        whileHover={{ scale: 1.1 }}
-                        transition={{ duration: 0.4 }}
-                      />
-                      <Badge className="absolute top-4 left-4 bg-card/90 backdrop-blur">{article.category}</Badge>
-                    </div>
-                    <CardContent className="p-5">
-                      <h3 className="text-lg font-bold mb-2 group-hover:text-primary transition-colors line-clamp-2">
-                        {article.title}
-                      </h3>
-                      <p className="text-muted-foreground text-sm mb-4 line-clamp-2">{article.excerpt}</p>
-                      <div className="flex items-center justify-between text-xs text-muted-foreground">
-                        <span className="flex items-center gap-1">
-                          <Calendar className="h-3 w-3" />
-                          {article.date}
-                        </span>
-                        <span className="flex items-center gap-1">
-                          <Clock className="h-3 w-3" />
-                          {article.readTime}
-                        </span>
-                      </div>
-                    </CardContent>
-                  </Card>
-                </motion.div>
-              </AnimatedGridItem>
-            ))}
-          </AnimatedGrid>
+          {filteredArticles.length === 0 ? (
+            <div className="text-center py-12">
+              <p className="text-muted-foreground">Aucun article trouvé pour cette recherche.</p>
+            </div>
+          ) : (
+            <AnimatedGrid className="grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" staggerDelay={0.08}>
+              {filteredArticles.map((article, index) => (
+                <AnimatedGridItem key={article.id}>
+                  <Link to={`/blog/${article.slug}`}>
+                    <motion.div whileHover={{ y: -5 }} transition={{ duration: 0.2 }}>
+                      <Card className="overflow-hidden hover:shadow-xl transition-all group cursor-pointer h-full border-2 hover:border-primary/30">
+                        <div className="relative h-48 overflow-hidden">
+                          <motion.img 
+                            src={article.image} 
+                            alt={article.title}
+                            className="w-full h-full object-cover"
+                            whileHover={{ scale: 1.1 }}
+                            transition={{ duration: 0.4 }}
+                          />
+                          <Badge className="absolute top-4 left-4 bg-card/90 backdrop-blur">{article.category}</Badge>
+                        </div>
+                        <CardContent className="p-5">
+                          <h3 className="text-lg font-bold mb-2 group-hover:text-primary transition-colors line-clamp-2">
+                            {article.title}
+                          </h3>
+                          <p className="text-muted-foreground text-sm mb-4 line-clamp-2">{article.excerpt}</p>
+                          <div className="flex items-center justify-between text-xs text-muted-foreground">
+                            <span className="flex items-center gap-1">
+                              <Calendar className="h-3 w-3" />
+                              {new Date(article.date).toLocaleDateString('fr-FR', { day: 'numeric', month: 'short' })}
+                            </span>
+                            <span className="flex items-center gap-1">
+                              <Clock className="h-3 w-3" />
+                              {article.readTime}
+                            </span>
+                          </div>
+                        </CardContent>
+                      </Card>
+                    </motion.div>
+                  </Link>
+                </AnimatedGridItem>
+              ))}
+            </AnimatedGrid>
+          )}
 
           {/* Load more */}
           <motion.div 
