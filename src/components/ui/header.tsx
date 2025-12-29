@@ -13,29 +13,51 @@ export const Header = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
+    if (!supabase) return;
+
     const checkAuth = async () => {
       const { data: { session } } = await supabase.auth.getSession();
       setIsAuthenticated(!!session);
-      
-      if (session) {
-        const { data: profile } = await supabase
-          .from('profiles')
-          .select('user_type')
-          .eq('id', session.user.id)
-          .single();
-        setUserType(profile?.user_type || null);
+
+      if (!session) {
+        setUserType(null);
+        return;
       }
+
+      const { data: profile } = await supabase
+        .from('profiles')
+        .select('user_type')
+        .eq('id', session.user.id)
+        .single();
+      setUserType(profile?.user_type || null);
     };
+
     checkAuth();
 
     const { data: { subscription } } = supabase.auth.onAuthStateChange((_, session) => {
       setIsAuthenticated(!!session);
+
+      if (!session) {
+        setUserType(null);
+        return;
+      }
+
+      // Avoid additional Supabase calls inside the callback
+      setTimeout(() => {
+        supabase
+          .from('profiles')
+          .select('user_type')
+          .eq('id', session.user.id)
+          .single()
+          .then(({ data }) => setUserType(data?.user_type || null));
+      }, 0);
     });
 
     return () => subscription.unsubscribe();
   }, []);
 
   const handleLogout = async () => {
+    if (!supabase) return;
     await supabase.auth.signOut();
     navigate('/');
     setIsOpen(false);

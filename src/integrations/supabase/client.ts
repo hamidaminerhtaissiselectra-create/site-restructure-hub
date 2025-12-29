@@ -2,8 +2,8 @@
 import { createClient } from '@supabase/supabase-js';
 import type { Database } from './types';
 
-const SUPABASE_URL = import.meta.env.VITE_SUPABASE_URL || '';
-const SUPABASE_PUBLISHABLE_KEY = import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY || '';
+const SUPABASE_URL = "https://aqitjhaotpautjywoeys.supabase.co";
+const SUPABASE_PUBLISHABLE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImFxaXRqaGFvdHBhdXRqeXdvZXlzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjU1NzE3MTIsImV4cCI6MjA4MTE0NzcxMn0.CS8QpR9kVzHC6jGnkwV3onm-HiVNWyxF8rryfK2p87o";
 
 // Check if localStorage is available (may be blocked in iframes/sandboxed contexts)
 const getStorage = () => {
