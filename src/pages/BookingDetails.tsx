@@ -10,6 +10,7 @@ import { toast } from "@/hooks/use-toast";
 import { SEOHead } from "@/components/seo/SEOHead";
 import { FloatingContact } from "@/components/ui/floating-contact";
 import { motion } from "framer-motion";
+import { WalkProofUpload } from "@/components/booking/WalkProofUpload";
 
 const containerVariants = {
   hidden: { opacity: 0 },
@@ -29,6 +30,8 @@ const BookingDetails = () => {
   const navigate = useNavigate();
   const [booking, setBooking] = useState<any>(null);
   const [loading, setLoading] = useState(true);
+  const [currentUserId, setCurrentUserId] = useState<string | null>(null);
+  const [walkProofs, setWalkProofs] = useState<any[]>([]);
 
   useEffect(() => {
     fetchBooking();
@@ -40,6 +43,8 @@ const BookingDetails = () => {
       navigate('/auth');
       return;
     }
+    
+    setCurrentUserId(session.user.id);
 
     try {
       const { data, error } = await supabase
@@ -63,6 +68,9 @@ const BookingDetails = () => {
       if (walkerError) throw walkerError;
 
       setBooking({ ...data, walker });
+      
+      // Fetch walk proofs
+      fetchWalkProofs();
     } catch (error: any) {
       toast({
         title: "Erreur",
@@ -71,6 +79,22 @@ const BookingDetails = () => {
       });
     } finally {
       setLoading(false);
+    }
+  };
+  
+  const fetchWalkProofs = async () => {
+    try {
+      const { data, error } = await (supabase as any)
+        .from('walk_proofs')
+        .select('*')
+        .eq('booking_id', id)
+        .order('uploaded_at', { ascending: false });
+      
+      if (!error && data) {
+        setWalkProofs(data);
+      }
+    } catch (e) {
+      // Table may not exist yet, ignore
     }
   };
 
@@ -253,16 +277,30 @@ const BookingDetails = () => {
             </Card>
           </motion.div>
 
-          {booking.special_notes && (
+          {booking.notes && (
             <motion.div variants={itemVariants} className="mt-6">
               <Card className="shadow-card">
                 <CardHeader>
                   <CardTitle>Instructions spéciales</CardTitle>
                 </CardHeader>
                 <CardContent>
-                  <p className="text-muted-foreground">{booking.special_notes}</p>
+                  <p className="text-muted-foreground">{booking.notes}</p>
                 </CardContent>
               </Card>
+            </motion.div>
+          )}
+          
+          {/* Walk Proofs Section */}
+          {booking.status !== 'pending' && booking.status !== 'cancelled' && (
+            <motion.div variants={itemVariants} className="mt-6">
+              <WalkProofUpload
+                bookingId={booking.id}
+                walkerId={booking.walker_id}
+                existingProofs={walkProofs}
+                isWalker={currentUserId === booking.walker_id}
+                onProofUploaded={fetchWalkProofs}
+                onProofValidated={fetchWalkProofs}
+              />
             </motion.div>
           )}
         </motion.div>

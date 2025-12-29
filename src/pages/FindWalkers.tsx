@@ -4,7 +4,7 @@ import { Footer } from "@/components/ui/footer";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Users, Dog, Shield, Sparkles } from 'lucide-react';
+import { Users, Dog, Shield, Sparkles, Zap } from 'lucide-react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "@/hooks/use-toast";
@@ -13,6 +13,7 @@ import { SEOHead } from "@/components/seo/SEOHead";
 import { FloatingContact } from "@/components/ui/floating-contact";
 import { SearchFilters } from "@/components/booking/SearchFilters";
 import { WalkerCard } from "@/components/booking/WalkerCard";
+import { useWalkerMatching, MatchingCriteria } from "@/hooks/useWalkerMatching";
 
 // Hero image
 import heroImage from "@/assets/pages/trouver-promeneurs-hero.jpg";
@@ -41,6 +42,17 @@ const FindWalkers = () => {
   const [searchCity, setSearchCity] = useState(searchParams.get('location') || '');
   const [selectedService, setSelectedService] = useState(searchParams.get('service') || 'all');
   const [sortBy, setSortBy] = useState('rating');
+  const [useSmartMatching, setUseSmartMatching] = useState(false);
+  
+  // Smart matching criteria
+  const matchingCriteria: MatchingCriteria = {
+    serviceType: selectedService !== 'all' ? selectedService : undefined,
+    maxBudget: 30,
+    preferVerified: true,
+    minRating: 4.0
+  };
+  
+  const { matchedWalkers, isLoading: matchingLoading } = useWalkerMatching(matchingCriteria);
 
   useEffect(() => {
     fetchWalkers();
@@ -242,6 +254,15 @@ const FindWalkers = () => {
             </p>
           </div>
           <div className="flex flex-wrap gap-2">
+            <Button
+              variant={useSmartMatching ? "default" : "outline"}
+              size="sm"
+              className="gap-1.5"
+              onClick={() => setUseSmartMatching(!useSmartMatching)}
+            >
+              <Zap className="h-3.5 w-3.5" />
+              Matching intelligent
+            </Button>
             <Badge variant="outline" className="gap-1.5 py-1.5 px-3">
               <Shield className="h-3.5 w-3.5 text-primary" />
               100% vérifiés
@@ -253,8 +274,25 @@ const FindWalkers = () => {
           </div>
         </motion.div>
 
+        {/* Smart Matching Info */}
+        {useSmartMatching && matchedWalkers.length > 0 && (
+          <motion.div 
+            className="mb-6 p-4 bg-primary/5 border border-primary/20 rounded-xl"
+            initial={{ opacity: 0, y: -10 }}
+            animate={{ opacity: 1, y: 0 }}
+          >
+            <div className="flex items-center gap-2 text-primary font-medium">
+              <Zap className="h-4 w-4" />
+              Matching intelligent activé
+            </div>
+            <p className="text-sm text-muted-foreground mt-1">
+              Les promeneurs sont triés par score de compatibilité selon vos critères
+            </p>
+          </motion.div>
+        )}
+
         {/* Results Grid */}
-        {loading ? (
+        {(loading || (useSmartMatching && matchingLoading)) ? (
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
             {[1, 2, 3, 4].map((i) => (
               <Card key={i} className="animate-pulse">
@@ -297,7 +335,7 @@ const FindWalkers = () => {
           </motion.div>
         ) : (
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-            {walkers.map((walker, index) => (
+            {(useSmartMatching ? matchedWalkers : walkers).map((walker: any, index) => (
               <WalkerCard
                 key={walker.id}
                 walker={walker}
@@ -306,6 +344,8 @@ const FindWalkers = () => {
                 onFavorite={handleToggleFavorite}
                 isFavorite={favorites.has(walker.user_id)}
                 isStarSitter={walker.verified && (walker.rating || 0) >= 4.8}
+                matchScore={useSmartMatching ? walker.matchScore : undefined}
+                matchReasons={useSmartMatching ? walker.matchReasons : undefined}
               />
             ))}
           </div>

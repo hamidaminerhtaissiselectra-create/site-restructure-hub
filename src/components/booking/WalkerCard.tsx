@@ -28,6 +28,8 @@ interface WalkerCardProps {
   onFavorite?: (walkerId: string) => void;
   isFavorite?: boolean;
   isStarSitter?: boolean;
+  matchScore?: number;
+  matchReasons?: string[];
 }
 
 const serviceLabels: Record<string, string> = {
@@ -43,7 +45,9 @@ export const WalkerCard = ({
   onBook, 
   onFavorite, 
   isFavorite = false,
-  isStarSitter = false 
+  isStarSitter = false,
+  matchScore,
+  matchReasons = []
 }: WalkerCardProps) => {
   const navigate = useNavigate();
   const responseRate = walker.response_rate || Math.floor(Math.random() * 20 + 80);
@@ -57,13 +61,19 @@ export const WalkerCard = ({
       whileHover={{ y: -4 }}
       className="h-full"
     >
-      <Card className="h-full overflow-hidden group hover:shadow-xl transition-all duration-300 border-border/60 hover:border-primary/30">
+      <Card className={`h-full overflow-hidden group hover:shadow-xl transition-all duration-300 border-border/60 hover:border-primary/30 ${matchScore ? 'ring-2 ring-primary/20' : ''}`}>
         <CardContent className="p-0">
-          {/* Header avec numéro de rang */}
+          {/* Header avec numéro de rang ou score */}
           <div className="relative">
-            {/* Rank badge */}
+            {/* Rank/Score badge */}
             <div className="absolute top-3 left-3 z-10">
-              <span className="text-lg font-bold text-muted-foreground">{index + 1}.</span>
+              {matchScore ? (
+                <Badge className="bg-primary text-primary-foreground">
+                  {matchScore}% match
+                </Badge>
+              ) : (
+                <span className="text-lg font-bold text-muted-foreground">{index + 1}.</span>
+              )}
             </div>
             
             {/* Favorite button */}
@@ -160,6 +170,17 @@ export const WalkerCard = ({
                   <button className="text-primary text-sm font-medium mt-1 hover:underline">
                     En savoir plus
                   </button>
+                </div>
+              )}
+              
+              {/* Match reasons */}
+              {matchReasons.length > 0 && (
+                <div className="flex flex-wrap gap-1.5 mt-3">
+                  {matchReasons.slice(0, 3).map((reason, i) => (
+                    <Badge key={i} variant="secondary" className="text-xs">
+                      {reason}
+                    </Badge>
+                  ))}
                 </div>
               )}
               
