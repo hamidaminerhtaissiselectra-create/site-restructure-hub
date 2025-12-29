@@ -40,7 +40,7 @@ import ServiceVisite from "./pages/services/ServiceVisite";
 import ServiceDogSitting from "./pages/services/ServiceDogSitting";
 import ServicePetSitting from "./pages/services/ServicePetSitting";
 import ServiceMarcheReguliere from "./pages/services/ServiceMarcheReguliere";
-
+import BlogArticle from "./pages/BlogArticle";
 const queryClient = new QueryClient();
 
 // ScrollToTop component that scrolls to top on route change
