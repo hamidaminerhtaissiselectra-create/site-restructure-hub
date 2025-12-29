@@ -6,12 +6,19 @@ import { SEOFAQ } from "@/components/ui/seo-faq";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent } from "@/components/ui/card";
+import { ClientReviews } from "@/components/ui/client-reviews";
+import { CaseStudies } from "@/components/ui/case-studies";
+import { getReviewsByService, getCaseStudiesByService } from "@/data/clientReviewsData";
 import { 
   Home, Clock, Shield, Camera, Heart, Star, 
   CheckCircle, ArrowRight, Droplet, UtensilsCrossed, Stethoscope, Award
 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import serviceVisiteImg from "@/assets/service-visite.jpg";
+
+// Données pour reviews et case studies
+const reviews = getReviewsByService("visite");
+const caseStudies = getCaseStudiesByService("visite");
 
 const visiteFAQs = [
   {

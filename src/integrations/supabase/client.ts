@@ -2,8 +2,8 @@
 import { createClient } from '@supabase/supabase-js';
 import type { Database } from './types';
 
-const SUPABASE_URL = import.meta.env.VITE_SUPABASE_URL;
-const SUPABASE_PUBLISHABLE_KEY = import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY;
+const SUPABASE_URL = import.meta.env.VITE_SUPABASE_URL || '';
+const SUPABASE_PUBLISHABLE_KEY = import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY || '';
 
 // Check if localStorage is available (may be blocked in iframes/sandboxed contexts)
 const getStorage = () => {
@@ -26,10 +26,21 @@ const getStorage = () => {
 // Import the supabase client like this:
 // import { supabase } from "@/integrations/supabase/client";
 
-export const supabase = createClient<Database>(SUPABASE_URL, SUPABASE_PUBLISHABLE_KEY, {
-  auth: {
-    storage: getStorage(),
-    persistSession: true,
-    autoRefreshToken: true,
+// Create a mock client if Supabase is not configured
+const createSupabaseClient = () => {
+  if (!SUPABASE_URL || !SUPABASE_PUBLISHABLE_KEY) {
+    // Return a mock client that won't crash the app
+    console.warn('Supabase not configured. Some features may not work.');
+    return null as unknown as ReturnType<typeof createClient<Database>>;
   }
-});
+  
+  return createClient<Database>(SUPABASE_URL, SUPABASE_PUBLISHABLE_KEY, {
+    auth: {
+      storage: getStorage(),
+      persistSession: true,
+      autoRefreshToken: true,
+    }
+  });
+};
+
+export const supabase = createSupabaseClient();

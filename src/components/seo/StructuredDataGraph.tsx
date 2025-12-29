@@ -10,9 +10,24 @@ import { Helmet } from "react-helmet-async";
  * - LocalBusiness : Agences locales par ville/région
  */
 
+export interface ServiceData {
+  name: string;
+  description: string;
+  slug: string;
+  offers?: Array<{ name: string; price: string }>;
+}
+
+export interface ZoneData {
+  name: string;
+  slug: string;
+  description: string;
+  image?: string;
+  population?: string;
+}
+
 export interface StructuredDataGraphProps {
   type: "homepage" | "service" | "local-business";
-  data?: Record<string, any>;
+  data?: ServiceData | ZoneData;
 }
 
 /**
@@ -79,12 +94,7 @@ export const generateOrganizationGraph = () => {
 /**
  * Génère le balisage Service imbriqué
  */
-export const generateServiceGraph = (serviceData: {
-  name: string;
-  description: string;
-  slug: string;
-  offers?: Array<{ name: string; price: string }>;
-}) => {
+export const generateServiceGraph = (serviceData: ServiceData) => {
   return {
     "@type": "Service",
     "@id": `https://dogwalking.fr/services/${serviceData.slug}#service`,
@@ -115,13 +125,7 @@ export const generateServiceGraph = (serviceData: {
 /**
  * Génère le balisage LocalBusiness imbriqué
  */
-export const generateLocalBusinessGraph = (zoneData: {
-  name: string;
-  slug: string;
-  description: string;
-  image?: string;
-  population?: string;
-}) => {
+export const generateLocalBusinessGraph = (zoneData: ZoneData) => {
   return {
     "@type": "LocalBusiness",
     "@id": `https://dogwalking.fr/zone/${zoneData.slug}#local-business`,
@@ -172,7 +176,7 @@ export const StructuredDataGraph = ({
         "@context": "https://schema.org",
         "@graph": [
           generateOrganizationGraph()["@graph"][0],
-          generateServiceGraph(data),
+          generateServiceGraph(data as ServiceData),
         ],
       };
       break;
@@ -182,7 +186,7 @@ export const StructuredDataGraph = ({
         "@context": "https://schema.org",
         "@graph": [
           generateOrganizationGraph()["@graph"][0],
-          generateLocalBusinessGraph(data),
+          generateLocalBusinessGraph(data as ZoneData),
         ],
       };
       break;

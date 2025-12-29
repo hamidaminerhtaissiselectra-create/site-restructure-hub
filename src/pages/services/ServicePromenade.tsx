@@ -5,6 +5,9 @@ import { SEOFAQ } from "@/components/ui/seo-faq";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent } from "@/components/ui/card";
+import { ClientReviews } from "@/components/ui/client-reviews";
+import { CaseStudies } from "@/components/ui/case-studies";
+import { getReviewsByService, getCaseStudiesByService } from "@/data/clientReviewsData";
 import { 
   Dog, Clock, Shield, Camera, MapPin, Heart, Star, 
   CheckCircle, ArrowRight, Users, Zap, Calendar, Award
@@ -14,6 +17,10 @@ import servicePromenadeImg from "@/assets/service-promenade.jpg";
 import { TrustBadges } from "@/components/ui/trust-badges";
 import { ExpertBio } from "@/components/ui/expert-bio";
 import { getExpertsByExpertise } from "@/data/expertsData";
+
+// Données pour reviews et case studies
+const reviews = getReviewsByService("promenade");
+const caseStudies = getCaseStudiesByService("promenade");
 
 const promenadeFAQs = [
   {

@@ -26,24 +26,6 @@ export default function LocalZone() {
             Voir toutes nos zones d'intervention
           </Link>
         </main>
-                {/* Client Reviews Section */}
-        {reviews.length > 0 && (
-          <section className="py-12 bg-muted/30">
-            <div className="container mx-auto px-4">
-              <ClientReviews reviews={reviews} />
-            </div>
-          </section>
-        )}
-
-        {/* Case Studies Section */}
-        {caseStudies.length > 0 && (
-          <section className="py-12">
-            <div className="container mx-auto px-4">
-              <CaseStudies studies={caseStudies} />
-            </div>
-          </section>
-        )}
-
         <Footer />
       </div>
     );
