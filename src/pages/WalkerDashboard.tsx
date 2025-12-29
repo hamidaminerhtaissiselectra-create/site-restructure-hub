@@ -6,11 +6,12 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Progress } from "@/components/ui/progress";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { 
   Euro, Calendar, Star, TrendingUp, Clock, Dog as DogIcon,
   Camera, Upload, CheckCircle, AlertCircle, XCircle, 
   MessageCircle, ChevronRight, MapPin, Shield, Award,
-  FileText, Sparkles, ArrowRight, Bell, Phone, Wallet
+  FileText, Sparkles, ArrowRight, Bell, Phone, Wallet, BarChart3
 } from 'lucide-react';
 import { supabase } from "@/integrations/supabase/client";
 import { useNavigate } from "react-router-dom";
@@ -18,6 +19,8 @@ import { toast } from "@/hooks/use-toast";
 import { motion } from "framer-motion";
 import { SEOHead } from "@/components/seo/SEOHead";
 import { FloatingContact } from "@/components/ui/floating-contact";
+import { EarningsChart } from "@/components/dashboard/EarningsChart";
+import { PerformanceStats } from "@/components/dashboard/PerformanceStats";
 
 // Hero image
 import heroImage from "@/assets/pages/dashboard-walker-hero.jpg";
@@ -37,10 +40,16 @@ const WalkerDashboard = () => {
     averageRating: 0,
     totalReviews: 0,
     acceptanceRate: 100,
-    responseTime: "< 1h"
+    responseTime: "< 1h",
+    completionRate: 98,
+    repeatClientRate: 35,
+    previousMonthEarnings: 0
   });
   const [upcomingBookings, setUpcomingBookings] = useState<any[]>([]);
   const [pendingRequests, setPendingRequests] = useState<any[]>([]);
+  const [earningsData, setEarningsData] = useState<any[]>([]);
+  const [serviceBreakdown, setServiceBreakdown] = useState<any[]>([]);
+  const [activeTab, setActiveTab] = useState('overview');
 
   useEffect(() => {
     checkAuth();
@@ -120,6 +129,7 @@ const WalkerDashboard = () => {
 
         const now = new Date();
         const startOfMonth = new Date(now.getFullYear(), now.getMonth(), 1);
+        const startOfPrevMonth = new Date(now.getFullYear(), now.getMonth() - 1, 1);
 
         const upcoming = enrichedBookings.filter(
           b => new Date(b.scheduled_date) >= now && b.status === 'confirmed'
@@ -128,14 +138,78 @@ const WalkerDashboard = () => {
         const completedThisMonth = enrichedBookings.filter(
           b => b.status === 'completed' && new Date(b.created_at) >= startOfMonth
         );
+        const completedPrevMonth = enrichedBookings.filter(
+          b => b.status === 'completed' && new Date(b.created_at) >= startOfPrevMonth && new Date(b.created_at) < startOfMonth
+        );
         const allCompleted = enrichedBookings.filter(b => b.status === 'completed');
 
         const monthlyEarnings = completedThisMonth.reduce((sum, b) => 
           sum + Number(b.price || 0) * 0.87, 0
         );
+        const previousMonthEarnings = completedPrevMonth.reduce((sum, b) => 
+          sum + Number(b.price || 0) * 0.87, 0
+        );
         const pendingEarnings = pending.reduce((sum, b) => 
           sum + Number(b.price || 0) * 0.87, 0
         );
+
+        // Calculate earnings data for last 6 months
+        const monthNames = ['Jan', 'Fév', 'Mar', 'Avr', 'Mai', 'Juin', 'Juil', 'Août', 'Sep', 'Oct', 'Nov', 'Déc'];
+        const last6Months = [];
+        for (let i = 5; i >= 0; i--) {
+          const date = new Date(now.getFullYear(), now.getMonth() - i, 1);
+          const monthStart = new Date(date.getFullYear(), date.getMonth(), 1);
+          const monthEnd = new Date(date.getFullYear(), date.getMonth() + 1, 0);
+          
+          const monthBookings = allCompleted.filter(b => {
+            const bookingDate = new Date(b.scheduled_date);
+            return bookingDate >= monthStart && bookingDate <= monthEnd;
+          });
+          
+          const earnings = monthBookings.reduce((sum, b) => sum + Number(b.price || 0) * 0.87, 0);
+          const commission = monthBookings.reduce((sum, b) => sum + Number(b.price || 0) * 0.13, 0);
+          
+          last6Months.push({
+            month: monthNames[date.getMonth()],
+            earnings,
+            walks: monthBookings.length,
+            commission
+          });
+        }
+        setEarningsData(last6Months);
+
+        // Calculate service breakdown
+        const serviceTypes: Record<string, number> = {};
+        allCompleted.forEach(b => {
+          const type = b.service_type || 'promenade';
+          serviceTypes[type] = (serviceTypes[type] || 0) + Number(b.price || 0) * 0.87;
+        });
+        
+        const serviceLabels: Record<string, string> = {
+          promenade: 'Promenades',
+          visite: 'Visites',
+          garde: 'Garde',
+          veterinaire: 'Vétérinaire'
+        };
+        
+        setServiceBreakdown(Object.entries(serviceTypes).map(([key, value]) => ({
+          name: serviceLabels[key] || key,
+          value,
+          color: 'hsl(var(--primary))'
+        })));
+
+        // Calculate completion rate
+        const cancelled = enrichedBookings.filter(b => b.status === 'cancelled' && b.walker_id === walkerId).length;
+        const total = allCompleted.length + cancelled;
+        const completionRate = total > 0 ? Math.round((allCompleted.length / total) * 100) : 100;
+
+        // Calculate repeat clients
+        const clientWalks = new Map<string, number>();
+        allCompleted.forEach(b => {
+          clientWalks.set(b.owner_id, (clientWalks.get(b.owner_id) || 0) + 1);
+        });
+        const repeatClients = Array.from(clientWalks.values()).filter(count => count > 1).length;
+        const repeatClientRate = clientWalks.size > 0 ? Math.round((repeatClients / clientWalks.size) * 100) : 0;
 
         setStats({
           monthlyEarnings,
@@ -145,7 +219,10 @@ const WalkerDashboard = () => {
           averageRating: walkerData?.rating || 0,
           totalReviews: walkerData?.total_reviews || 0,
           acceptanceRate: 95,
-          responseTime: "< 1h"
+          responseTime: "< 1h",
+          completionRate,
+          repeatClientRate,
+          previousMonthEarnings
         });
 
         setUpcomingBookings(upcoming.slice(0, 5));
@@ -318,65 +395,115 @@ const WalkerDashboard = () => {
           </Card>
         )}
 
-        {/* Stats Cards */}
-        <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
-          <Card className="hover:shadow-lg transition-all duration-300 hover:-translate-y-1 bg-gradient-to-br from-green-50 to-emerald-50 dark:from-green-950/20 dark:to-emerald-950/20 border-green-200 dark:border-green-900">
-            <CardHeader className="flex flex-row items-center justify-between pb-2">
-              <CardTitle className="text-sm font-medium text-muted-foreground">Gains ce mois</CardTitle>
-              <div className="w-10 h-10 rounded-full bg-green-100 dark:bg-green-900/30 flex items-center justify-center">
-                <Euro className="h-5 w-5 text-green-600" />
-              </div>
-            </CardHeader>
-            <CardContent>
-              <div className="text-3xl font-bold text-green-600">{stats.monthlyEarnings.toFixed(2)}€</div>
-              <p className="text-xs text-muted-foreground mt-1">
-                +<span className="font-semibold">{stats.pendingEarnings.toFixed(2)}€</span> en attente
-              </p>
-            </CardContent>
-          </Card>
+        {/* Tabs Navigation */}
+        <Tabs value={activeTab} onValueChange={setActiveTab} className="mb-8">
+          <TabsList className="grid w-full grid-cols-3 lg:w-auto lg:inline-grid">
+            <TabsTrigger value="overview" className="gap-2">
+              <DogIcon className="h-4 w-4" />
+              Aperçu
+            </TabsTrigger>
+            <TabsTrigger value="earnings" className="gap-2">
+              <Euro className="h-4 w-4" />
+              Revenus
+            </TabsTrigger>
+            <TabsTrigger value="performance" className="gap-2">
+              <BarChart3 className="h-4 w-4" />
+              Performance
+            </TabsTrigger>
+          </TabsList>
 
-          <Card className="hover:shadow-lg transition-all duration-300 hover:-translate-y-1">
-            <CardHeader className="flex flex-row items-center justify-between pb-2">
-              <CardTitle className="text-sm font-medium text-muted-foreground">Promenades</CardTitle>
-              <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center">
-                <DogIcon className="h-5 w-5 text-primary" />
-              </div>
-            </CardHeader>
-            <CardContent>
-              <div className="text-3xl font-bold">{stats.totalWalks}</div>
-              <p className="text-xs text-muted-foreground mt-1">{stats.completedThisMonth} ce mois</p>
-            </CardContent>
-          </Card>
+          {/* Overview Tab - Original Stats Cards */}
+          <TabsContent value="overview" className="mt-6">
+            <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
+              <Card className="hover:shadow-lg transition-all duration-300 hover:-translate-y-1 bg-gradient-to-br from-green-50 to-emerald-50 dark:from-green-950/20 dark:to-emerald-950/20 border-green-200 dark:border-green-900">
+                <CardHeader className="flex flex-row items-center justify-between pb-2">
+                  <CardTitle className="text-sm font-medium text-muted-foreground">Gains ce mois</CardTitle>
+                  <div className="w-10 h-10 rounded-full bg-green-100 dark:bg-green-900/30 flex items-center justify-center">
+                    <Euro className="h-5 w-5 text-green-600" />
+                  </div>
+                </CardHeader>
+                <CardContent>
+                  <div className="text-3xl font-bold text-green-600">{stats.monthlyEarnings.toFixed(2)}€</div>
+                  <p className="text-xs text-muted-foreground mt-1">
+                    +<span className="font-semibold">{stats.pendingEarnings.toFixed(2)}€</span> en attente
+                  </p>
+                </CardContent>
+              </Card>
 
-          <Card className="hover:shadow-lg transition-all duration-300 hover:-translate-y-1">
-            <CardHeader className="flex flex-row items-center justify-between pb-2">
-              <CardTitle className="text-sm font-medium text-muted-foreground">Note moyenne</CardTitle>
-              <div className="w-10 h-10 rounded-full bg-amber-100 dark:bg-amber-900/30 flex items-center justify-center">
-                <Star className="h-5 w-5 text-amber-500" />
-              </div>
-            </CardHeader>
-            <CardContent>
-              <div className="text-3xl font-bold flex items-center gap-1">
-                {stats.averageRating > 0 ? stats.averageRating.toFixed(1) : '-'}
-                <Star className="h-5 w-5 text-amber-500 fill-amber-500" />
-              </div>
-              <p className="text-xs text-muted-foreground mt-1">{stats.totalReviews} avis</p>
-            </CardContent>
-          </Card>
+              <Card className="hover:shadow-lg transition-all duration-300 hover:-translate-y-1">
+                <CardHeader className="flex flex-row items-center justify-between pb-2">
+                  <CardTitle className="text-sm font-medium text-muted-foreground">Promenades</CardTitle>
+                  <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center">
+                    <DogIcon className="h-5 w-5 text-primary" />
+                  </div>
+                </CardHeader>
+                <CardContent>
+                  <div className="text-3xl font-bold">{stats.totalWalks}</div>
+                  <p className="text-xs text-muted-foreground mt-1">{stats.completedThisMonth} ce mois</p>
+                </CardContent>
+              </Card>
 
-          <Card className="hover:shadow-lg transition-all duration-300 hover:-translate-y-1">
-            <CardHeader className="flex flex-row items-center justify-between pb-2">
-              <CardTitle className="text-sm font-medium text-muted-foreground">Taux d'acceptation</CardTitle>
-              <div className="w-10 h-10 rounded-full bg-blue-100 dark:bg-blue-900/30 flex items-center justify-center">
-                <TrendingUp className="h-5 w-5 text-blue-600" />
-              </div>
-            </CardHeader>
-            <CardContent>
-              <div className="text-3xl font-bold">{stats.acceptanceRate}%</div>
-              <p className="text-xs text-muted-foreground mt-1">Réponse {stats.responseTime}</p>
-            </CardContent>
-          </Card>
-        </div>
+              <Card className="hover:shadow-lg transition-all duration-300 hover:-translate-y-1">
+                <CardHeader className="flex flex-row items-center justify-between pb-2">
+                  <CardTitle className="text-sm font-medium text-muted-foreground">Note moyenne</CardTitle>
+                  <div className="w-10 h-10 rounded-full bg-amber-100 dark:bg-amber-900/30 flex items-center justify-center">
+                    <Star className="h-5 w-5 text-amber-500" />
+                  </div>
+                </CardHeader>
+                <CardContent>
+                  <div className="text-3xl font-bold flex items-center gap-1">
+                    {stats.averageRating > 0 ? stats.averageRating.toFixed(1) : '-'}
+                    <Star className="h-5 w-5 text-amber-500 fill-amber-500" />
+                  </div>
+                  <p className="text-xs text-muted-foreground mt-1">{stats.totalReviews} avis</p>
+                </CardContent>
+              </Card>
+
+              <Card className="hover:shadow-lg transition-all duration-300 hover:-translate-y-1">
+                <CardHeader className="flex flex-row items-center justify-between pb-2">
+                  <CardTitle className="text-sm font-medium text-muted-foreground">Taux d'acceptation</CardTitle>
+                  <div className="w-10 h-10 rounded-full bg-blue-100 dark:bg-blue-900/30 flex items-center justify-center">
+                    <TrendingUp className="h-5 w-5 text-blue-600" />
+                  </div>
+                </CardHeader>
+                <CardContent>
+                  <div className="text-3xl font-bold">{stats.acceptanceRate}%</div>
+                  <p className="text-xs text-muted-foreground mt-1">Réponse {stats.responseTime}</p>
+                </CardContent>
+              </Card>
+            </div>
+          </TabsContent>
+
+          {/* Earnings Tab */}
+          <TabsContent value="earnings" className="mt-6">
+            <EarningsChart
+              data={earningsData}
+              serviceBreakdown={serviceBreakdown}
+              totalEarnings={stats.monthlyEarnings}
+              previousPeriodEarnings={stats.previousMonthEarnings}
+              period="month"
+            />
+          </TabsContent>
+
+          {/* Performance Tab */}
+          <TabsContent value="performance" className="mt-6">
+            <PerformanceStats
+              averageRating={stats.averageRating}
+              totalReviews={stats.totalReviews}
+              responseTime={stats.responseTime}
+              acceptanceRate={stats.acceptanceRate}
+              completionRate={stats.completionRate}
+              repeatClientRate={stats.repeatClientRate}
+              totalWalks={stats.totalWalks}
+              walksThisMonth={stats.completedThisMonth}
+              badges={badges.map(b => ({
+                name: b.badge_name,
+                icon: '🏆',
+                earned: true
+              }))}
+            />
+          </TabsContent>
+        </Tabs>
 
         {/* Main Content */}
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
