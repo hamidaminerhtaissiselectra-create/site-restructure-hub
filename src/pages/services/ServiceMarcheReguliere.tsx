@@ -7,6 +7,9 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent } from "@/components/ui/card";
 import { FloatingContact } from "@/components/ui/floating-contact";
+import { ClientReviews } from "@/components/ui/client-reviews";
+import { CaseStudies } from "@/components/ui/case-studies";
+import { getReviewsByService, getCaseStudiesByService } from "@/data/clientReviewsData";
 import { motion } from "framer-motion";
 import { 
   Calendar, Clock, Shield, Camera, Star, Heart, Repeat,
@@ -20,6 +23,10 @@ import marcheQuotidienne from "@/assets/services/marche-reguliere-quotidienne.jp
 import marcheEquilibre from "@/assets/services/marche-reguliere-chien-equilibre.jpg";
 import marchePlanning from "@/assets/services/marche-reguliere-planning.jpg";
 import marcheLien from "@/assets/services/marche-reguliere-lien.jpg";
+
+// Données pour reviews et case studies
+const reviews = getReviewsByService("marche-reguliere");
+const caseStudies = getCaseStudiesByService("marche-reguliere");
 
 const marcheReguliereFAQs = [
   {

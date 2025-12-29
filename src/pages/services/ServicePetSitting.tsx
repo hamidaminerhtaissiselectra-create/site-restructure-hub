@@ -7,6 +7,9 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent } from "@/components/ui/card";
 import { FloatingContact } from "@/components/ui/floating-contact";
+import { ClientReviews } from "@/components/ui/client-reviews";
+import { CaseStudies } from "@/components/ui/case-studies";
+import { getReviewsByService, getCaseStudiesByService } from "@/data/clientReviewsData";
 import { motion } from "framer-motion";
 import { 
   PawPrint, Clock, Shield, Camera, Star, Heart,
@@ -20,6 +23,10 @@ import petSittingMulti from "@/assets/services/pet-sitting-multi-animaux.jpg";
 import petSittingOrganisation from "@/assets/services/pet-sitting-organisation.jpg";
 import petSittingSerenite from "@/assets/services/pet-sitting-serenite.jpg";
 import petSittingPetitsAnimaux from "@/assets/services/pet-sitting-petits-animaux.jpg";
+
+// Données pour reviews et case studies
+const reviews = getReviewsByService("pet-sitting");
+const caseStudies = getCaseStudiesByService("pet-sitting");
 
 const petSittingFAQs = [
   {
