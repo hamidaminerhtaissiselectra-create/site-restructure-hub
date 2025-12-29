@@ -13,7 +13,7 @@
 | **Phase 2 : Pages Piliers** | ✅ 100% | Accueil + 6 Services |
 | **Phase 3 : Structure Profonde** | ✅ 100% | @graph, DepartmentZone, Silotage |
 | **Phase 4 : Preuves d'Expérience** | ✅ 100% | 8 Avis + 3 Études de cas |
-| **Phase 5 : Backend (Supabase)** | ⏳ 20% | Connexion OK, Stripe à faire |
+| **Phase 5 : Backend (Supabase)** | ⏳ 60% | Realtime OK, Stripe à faire |
 
 ---
 
@@ -73,6 +73,24 @@
 - [x] **ClientReviews** - Avis + Review Schema
 - [x] **CaseStudies** - Études de cas + Article Schema
 
+### Backend Temps Réel (Nouveau ✅)
+
+- [x] **Supabase Realtime** - Tables configurées pour temps réel
+  - `bookings` - Réservations en temps réel
+  - `notifications` - Notifications push instantanées
+  - `messages` - Chat temps réel
+- [x] **Hook useRealtimeBookings** - Gestion réservations avec updates live
+- [x] **Hook useRealtimeNotifications** - Notifications instantanées
+- [x] **NotificationCenter** - Centre de notifications dans le header
+- [x] **Composant BookingSteps** - Flux de réservation en 4 étapes
+
+### Composants Réservation Améliorés (Nouveau ✅)
+
+- [x] **SearchFilters** - Filtres de recherche avancés
+- [x] **WalkerCard** - Carte promeneur avec badges et notation
+- [x] **BookingSteps** - Étapes de réservation animées (4 steps)
+- [x] **FindWalkers** - Page recherche avec filtres intégrés
+
 ---
 
 ## ⏳ ÉLÉMENTS À IMPLÉMENTER
@@ -81,8 +99,8 @@
 
 - [ ] **Intégration Stripe Escrow** - Paiement sécurisé avec rétention
 - [ ] **Emails Transactionnels** - Confirmations de réservation
-- [ ] **Notifications temps réel** - Websockets/Supabase Realtime
-- [ ] **Système de messagerie complet** - Chat promeneur/propriétaire
+- [x] ~~**Notifications temps réel**~~ - ✅ Websockets/Supabase Realtime configuré
+- [ ] **Système de messagerie complet** - Chat promeneur/propriétaire (base prête)
 
 ### Optimisations Techniques
 
@@ -93,7 +111,7 @@
 ### Pages Manquantes ou Incomplètes
 
 - [ ] **Page Blog** - Articles SEO (actuellement placeholder)
-- [ ] **Flux de réservation complet** - Étapes 1-2-3-4
+- [x] ~~**Flux de réservation complet**~~ - ✅ Étapes 1-2-3-4 avec BookingSteps
 - [ ] **Dashboard Promeneur** - Statistiques détaillées
 - [ ] **Système de matching** - Algorithme promeneur/propriétaire
 
@@ -119,19 +137,19 @@ VALUES ('VOTRE_USER_ID', 'admin');
 
 ### Tables Supabase Configurées
 
-| Table | Fonction | RLS |
-|-------|----------|-----|
-| `profiles` | Données utilisateur | ✅ |
-| `dogs` | Chiens des propriétaires | ✅ |
-| `bookings` | Réservations | ✅ |
-| `walker_profiles` | Profils promeneurs | ✅ |
-| `walker_documents` | Vérification documents | ✅ |
-| `user_roles` | Rôles (admin/user) | ✅ |
-| `reviews` | Avis clients | ✅ |
-| `messages` | Messagerie | ✅ |
-| `notifications` | Notifications | ✅ |
-| `favorites` | Favoris | ✅ |
-| `referrals` | Parrainage | ✅ |
+| Table | Fonction | RLS | Realtime |
+|-------|----------|-----|----------|
+| `profiles` | Données utilisateur | ✅ | ❌ |
+| `dogs` | Chiens des propriétaires | ✅ | ❌ |
+| `bookings` | Réservations | ✅ | ✅ |
+| `walker_profiles` | Profils promeneurs | ✅ | ❌ |
+| `walker_documents` | Vérification documents | ✅ | ❌ |
+| `user_roles` | Rôles (admin/user) | ✅ | ❌ |
+| `reviews` | Avis clients | ✅ | ❌ |
+| `messages` | Messagerie | ✅ | ✅ |
+| `notifications` | Notifications | ✅ | ✅ |
+| `favorites` | Favoris | ✅ | ❌ |
+| `referrals` | Parrainage | ✅ | ❌ |
 
 ---
 
@@ -168,6 +186,14 @@ Ces actions sont nécessaires mais ne concernent pas le code :
 ---
 
 ## 📝 NOTES DE MISE À JOUR
+
+### 29/12/2025 - Mise à jour Backend Temps Réel
+- ✅ Supabase Realtime activé sur `bookings`, `notifications`, `messages`
+- ✅ Hook `useRealtimeBookings` corrigé et typé
+- ✅ `NotificationCenter` intégré au header
+- ✅ `BookingSteps` intégré à BookWalk (flux 4 étapes)
+- ✅ `SearchFilters` + `WalkerCard` intégrés à FindWalkers
+- ✅ Phase 5 Backend passée de 20% à 60%
 
 ### 29/12/2025 - Audit Initial
 - Création du fichier d'audit
