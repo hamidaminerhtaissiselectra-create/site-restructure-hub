@@ -1,5 +1,5 @@
 import { Button } from "@/components/ui/button";
-import { NotificationBell } from "@/components/NotificationBell";
+import { NotificationCenter } from "@/components/notifications/NotificationCenter";
 import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { Menu, X, Dog, Home, Calendar, Shield, CreditCard, BookOpen, Users, MessageSquare, LogOut } from "lucide-react";
@@ -104,7 +104,7 @@ export const Header = () => {
         </nav>
 
         <div className="flex items-center gap-3">
-          {isAuthenticated && <NotificationBell />}
+          {isAuthenticated && <NotificationCenter />}
           
           {/* Desktop Auth Buttons */}
           <div className="hidden md:flex items-center gap-2">
