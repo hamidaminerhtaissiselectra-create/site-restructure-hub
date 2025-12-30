@@ -64,18 +64,19 @@ export const Header = () => {
   };
 
   const navLinks = [
-    { href: "/#comment-ca-marche", label: "Comment ça marche", icon: Home },
-    { href: "/#services", label: "Nos services", icon: Dog },
+    { href: "/find-walkers", label: "Trouver un promeneur", icon: Dog },
     { href: "/tarifs", label: "Tarifs", icon: CreditCard },
     { href: "/securite", label: "Sécurité", icon: Shield },
     { href: "/blog", label: "Blog", icon: BookOpen },
+    { href: "/qui-sommes-nous", label: "À propos", icon: Users },
   ];
 
   const authLinks = isAuthenticated ? [
-    { href: userType === 'walker' ? '/walker/dashboard' : '/dashboard', label: "Dashboard", icon: Home },
+    { href: userType === 'walker' ? '/walker/dashboard' : '/dashboard', label: "Tableau de bord", icon: Home },
     { href: "/bookings", label: "Mes réservations", icon: Calendar },
     { href: "/messages", label: "Messages", icon: MessageSquare },
     { href: "/profile", label: "Mon profil", icon: Users },
+    { href: "/referral", label: "Parrainage", icon: Users },
   ] : [];
 
   return (

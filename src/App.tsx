@@ -89,6 +89,7 @@ const App = () => (
             <Route path="/securite" element={<Securite />} />
             <Route path="/messages" element={<Messages />} />
             <Route path="/blog" element={<Blog />} />
+            <Route path="/blog/:slug" element={<BlogArticle />} />
             <Route path="/admin" element={<AdminDashboard />} />
             <Route path="/referral" element={<Referral />} />
             {/* About & Regional SEO */}
