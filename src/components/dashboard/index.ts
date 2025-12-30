@@ -8,3 +8,8 @@ export { WelcomeHero } from './WelcomeHero';
 export { ProfileCompletion } from './ProfileCompletion';
 export { PendingRequests } from './PendingRequests';
 export { DocumentStatus } from './DocumentStatus';
+export { EarningsChart } from './EarningsChart';
+export { PerformanceStats } from './PerformanceStats';
+export { EmptyState } from './EmptyState';
+export { WelcomeCard } from './WelcomeCard';
+export { QuickStats } from './QuickStats';
