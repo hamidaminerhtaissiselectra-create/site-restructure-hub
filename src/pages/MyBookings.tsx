@@ -49,7 +49,7 @@ const MyBookings = () => {
           dogs (name, breed)
         `)
         .eq('owner_id', session.user.id)
-        .order('booking_date', { ascending: false });
+        .order('scheduled_date', { ascending: false });
 
       if (bookingsError) throw bookingsError;
 
@@ -100,7 +100,7 @@ const MyBookings = () => {
     if (!status) {
       const now = new Date();
       return bookings.filter(
-        b => new Date(b.booking_date) >= now && b.status !== 'cancelled'
+        b => new Date(b.scheduled_date) >= now && b.status !== 'cancelled'
       );
     }
     return bookings.filter(b => b.status === status);
@@ -125,11 +125,11 @@ const MyBookings = () => {
           <div className="space-y-2">
             <div className="flex items-center gap-2 text-sm">
               <Calendar className="h-4 w-4 text-muted-foreground" />
-              <span>{new Date(booking.booking_date).toLocaleDateString('fr-FR')}</span>
+              <span>{new Date(booking.scheduled_date).toLocaleDateString('fr-FR')}</span>
             </div>
             <div className="flex items-center gap-2 text-sm">
               <Clock className="h-4 w-4 text-muted-foreground" />
-              <span>{booking.start_time} - {booking.duration_minutes} min</span>
+              <span>{booking.scheduled_time} - {booking.duration_minutes || 60} min</span>
             </div>
             <div className="flex items-center gap-2 text-sm">
               <DogIcon className="h-4 w-4 text-muted-foreground" />
@@ -145,7 +145,7 @@ const MyBookings = () => {
 
           <div className="mt-4 pt-4 border-t flex justify-between items-center">
             <span className="text-sm text-muted-foreground">Prix total</span>
-            <span className="text-lg font-bold text-primary">{Number(booking.total_price).toFixed(2)}€</span>
+            <span className="text-lg font-bold text-primary">{Number(booking.price || 0).toFixed(2)}€</span>
           </div>
         </CardContent>
       </Card>
