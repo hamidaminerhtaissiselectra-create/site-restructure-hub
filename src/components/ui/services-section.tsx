@@ -54,7 +54,7 @@ export const ServicesSection = () => {
       popular: true
     },
     {
-      id: "hebergement_jour",
+      id: "garderie",
       slug: "garderie-chien",
       title: "Garderie de jour",
       description: "Garderie de jour chez le promeneur, idéal pour la socialisation et l'exercice en journée.",
@@ -79,7 +79,7 @@ export const ServicesSection = () => {
     },
     {
       id: "visite_sanitaire",
-      slug: "visite-sanitaire",
+      slug: "visite-domicile",
       title: "Visite sanitaire",
       description: "Entretien quotidien avec produits fournis par le propriétaire (brossage, soins, hygiène).",
       minPrice: 16,
