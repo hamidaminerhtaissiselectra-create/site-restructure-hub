@@ -36,7 +36,7 @@ export const SearchForm = () => {
     const params = new URLSearchParams();
     if (address) params.set("location", address);
     if (selectedService) params.set("service", selectedService);
-    navigate(`/walkers?${params.toString()}`);
+    navigate(`/find-walkers?${params.toString()}`);
   };
 
   return (

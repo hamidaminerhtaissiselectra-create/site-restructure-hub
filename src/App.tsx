@@ -34,6 +34,7 @@ import WalkerProfile from "./pages/WalkerProfile";
 import QuiSommesNous from "./pages/QuiSommesNous";
 import ProcheDeVous from "./pages/ProcheDeVous";
 import DepartmentZone from "./pages/DepartmentZone";
+import Contact from "./pages/Contact";
 import ServicePromenade from "./pages/services/ServicePromenade";
 import ServiceGarde from "./pages/services/ServiceGarde";
 import ServiceVisite from "./pages/services/ServiceVisite";
@@ -95,6 +96,7 @@ const App = () => (
             {/* About & Regional SEO */}
             <Route path="/qui-sommes-nous" element={<QuiSommesNous />} />
             <Route path="/pres-de-vous" element={<ProcheDeVous />} />
+            <Route path="/contact" element={<Contact />} />
             {/* Local SEO Pages */}
             <Route path="/zones" element={<AllZones />} />
             <Route path="/zone/departement/:slug" element={<DepartmentZone />} />

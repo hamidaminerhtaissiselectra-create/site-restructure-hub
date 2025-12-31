@@ -210,7 +210,7 @@ export const ServicesSection = () => {
             </span>
           </div>
           <div>
-            <Button size="lg" className="rounded-full px-8" onClick={() => navigate('/walkers')}>
+            <Button size="lg" className="rounded-full px-8" onClick={() => navigate('/find-walkers')}>
               Voir tous les promeneurs
               <ArrowRight className="ml-2 h-5 w-5" />
             </Button>
