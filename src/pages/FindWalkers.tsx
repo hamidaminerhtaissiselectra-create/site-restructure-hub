@@ -14,7 +14,7 @@ import { SEOHead } from "@/components/seo/SEOHead";
 import { FloatingContact } from "@/components/ui/floating-contact";
 import { SearchFilters } from "@/components/booking/SearchFilters";
 import { WalkerCard } from "@/components/booking/WalkerCard";
-import { OwnerSection, ProviderSection, ServiceRequestCard, RequestFilters, ServiceRequest } from "@/components/hub";
+import { OwnerSection, ProviderSection, ServiceRequestCard, RequestFilters, ServiceRequest, ServiceRequestForm } from "@/components/hub";
 import { useWalkerMatching, MatchingCriteria } from "@/hooks/useWalkerMatching";
 
 // Hero image
@@ -97,7 +97,8 @@ const FindWalkers = () => {
   const [serviceRequests, setServiceRequests] = useState<ServiceRequest[]>(mockServiceRequests);
   const [requestSearchCity, setRequestSearchCity] = useState('');
   const [requestSelectedService, setRequestSelectedService] = useState('all');
-  
+  const [isRequestFormOpen, setIsRequestFormOpen] = useState(false);
+
   // Smart matching
   const matchingCriteria: MatchingCriteria = {
     serviceType: selectedService !== 'all' ? selectedService : undefined,
@@ -263,11 +264,8 @@ const FindWalkers = () => {
       navigate('/auth?redirect=/find-walkers?tab=deposer');
       return;
     }
-    // TODO: Navigate to request form or open modal
-    toast({
-      title: "Fonctionnalité à venir",
-      description: "Le formulaire de dépôt sera bientôt disponible.",
-    });
+    // Open the request form modal
+    setIsRequestFormOpen(true);
   };
 
   const handleRespondToRequest = async (requestId: string) => {
@@ -514,6 +512,31 @@ const FindWalkers = () => {
       </main>
       <Footer />
       <FloatingContact />
+      
+      {/* Service Request Form Modal */}
+      <ServiceRequestForm
+        isOpen={isRequestFormOpen}
+        onClose={() => setIsRequestFormOpen(false)}
+        onSubmit={(data) => {
+          // Add to local state for demo (will be Supabase later)
+          const newRequest: ServiceRequest = {
+            id: Date.now().toString(),
+            owner_name: "Vous",
+            service_type: data.service_type,
+            description: data.description,
+            city: data.city,
+            postal_code: data.postal_code,
+            date_needed: data.date_needed,
+            time_slot: data.time_slot,
+            pet_name: data.pet_name,
+            pet_type: data.pet_type,
+            created_at: new Date().toISOString(),
+            responses_count: 0,
+          };
+          setServiceRequests([newRequest, ...serviceRequests]);
+          setActiveTab('annonces');
+        }}
+      />
     </div>
   );
 };

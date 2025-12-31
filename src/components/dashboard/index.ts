@@ -13,3 +13,5 @@ export { PerformanceStats } from './PerformanceStats';
 export { EmptyState } from './EmptyState';
 export { WelcomeCard } from './WelcomeCard';
 export { QuickStats } from './QuickStats';
+export { VerificationBanner } from './VerificationBanner';
+export { BookingActionCard } from './BookingActionCard';

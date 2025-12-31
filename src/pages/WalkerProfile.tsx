@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { Helmet } from "react-helmet-async";
 import { Header } from "@/components/ui/header";
 import { Footer } from "@/components/ui/footer";
 import { Button } from "@/components/ui/button";
@@ -8,6 +9,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Progress } from "@/components/ui/progress";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { AnimatedSection, StaggeredChildren } from "@/components/ui/animated-section";
+import { AvailabilityCalendar } from "@/components/booking/AvailabilityCalendar";
 import { 
   Star, MapPin, Clock, Shield, Heart, MessageCircle, Calendar,
   CheckCircle, Award, Dog, Euro, Phone, Mail, Camera, Verified,
@@ -246,8 +248,31 @@ const WalkerProfilePage = () => {
   const responseRate = 95; // This would come from actual data
   const acceptanceRate = 88;
 
+  // Generate LocalBusiness schema for SEO
+  const localBusinessSchema = {
+    "@context": "https://schema.org",
+    "@type": "LocalBusiness",
+    "name": `${walker.first_name} - Promeneur de chiens`,
+    "description": walker.bio || "Promeneur de chiens professionnel vérifié",
+    "address": {
+      "@type": "PostalAddress",
+      "addressLocality": walker.city || "France"
+    },
+    "priceRange": `${walker.hourly_rate || 15}€`,
+    "aggregateRating": walker.rating ? {
+      "@type": "AggregateRating",
+      "ratingValue": walker.rating,
+      "reviewCount": walker.total_reviews || 0
+    } : undefined
+  };
+
   return (
     <div className="min-h-screen bg-background">
+      <Helmet>
+        <title>{walker.first_name} - Promeneur de Chien à {walker.city || 'France'} | DogWalking</title>
+        <meta name="description" content={`${walker.first_name}, promeneur de chiens vérifié à ${walker.city || 'France'}. Note: ${walker.rating?.toFixed(1) || '5.0'}/5. Tarif: ${walker.hourly_rate || 15}€/30min.`} />
+        <script type="application/ld+json">{JSON.stringify(localBusinessSchema)}</script>
+      </Helmet>
       <Header />
       <main className="container mx-auto px-4 py-24">
         {/* Hero Section */}
@@ -523,44 +548,23 @@ const WalkerProfilePage = () => {
               </Card>
             </AnimatedSection>
 
-            {/* Availability */}
+            {/* Availability - Visual Calendar */}
             <AnimatedSection animation="fade-left" delay={0.3}>
-              <Card>
-                <CardHeader>
-                  <CardTitle>Disponibilités</CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <div className="space-y-3">
-                    {walker.available_days && walker.available_days.length > 0 ? (
-                      <>
-                        <div className="flex flex-wrap gap-2">
-                          {walker.available_days.map((day) => (
-                            <Badge key={day} variant="secondary">
-                              {days[day as keyof typeof days] || day}
-                            </Badge>
-                          ))}
-                        </div>
-                        {walker.available_hours_start && walker.available_hours_end && (
-                          <p className="text-sm text-muted-foreground flex items-center gap-2">
-                            <Clock className="h-4 w-4" />
-                            {walker.available_hours_start} - {walker.available_hours_end}
-                          </p>
-                        )}
-                      </>
-                    ) : (
-                      <p className="text-sm text-muted-foreground">
-                        Disponibilités sur demande
-                      </p>
-                    )}
-                    {walker.max_dogs && (
-                      <p className="text-sm text-muted-foreground flex items-center gap-2">
-                        <Dog className="h-4 w-4" />
-                        Maximum {walker.max_dogs} chien{walker.max_dogs > 1 ? 's' : ''} simultanément
-                      </p>
-                    )}
-                  </div>
-                </CardContent>
-              </Card>
+              <AvailabilityCalendar
+                availableDays={walker.available_days}
+                availableHoursStart={walker.available_hours_start}
+                availableHoursEnd={walker.available_hours_end}
+              />
+              {walker.max_dogs && (
+                <Card className="mt-4">
+                  <CardContent className="py-3">
+                    <p className="text-sm text-muted-foreground flex items-center gap-2">
+                      <Dog className="h-4 w-4" />
+                      Maximum {walker.max_dogs} chien{walker.max_dogs > 1 ? 's' : ''} simultanément
+                    </p>
+                  </CardContent>
+                </Card>
+              )}
             </AnimatedSection>
 
             {/* CTA Card */}
