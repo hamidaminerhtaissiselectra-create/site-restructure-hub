@@ -111,9 +111,9 @@ export const ServicesSection = () => {
             <PawPrint className="h-4 w-4" />
             7 services disponibles
           </span>
-          <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-4">Nos Services</h2>
+          <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-4">Nos Services de Promenade et Garde de Chien</h2>
           <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-            Une gamme complète de services avec preuves photo/vidéo obligatoires et paiement escrow sécurisé
+            Promenade, garde à domicile, hébergement : trouvez le service adapté avec preuves photo obligatoires et paiement sécurisé.
           </p>
         </div>
 

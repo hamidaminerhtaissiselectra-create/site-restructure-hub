@@ -63,11 +63,11 @@ export function LocalPresenceSection() {
             Couverture nationale
           </div>
           <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold text-foreground mb-3">
-            Nous sommes présents près de chez vous
+            Promeneurs de Chien Disponibles dans Votre Ville
           </h2>
           <p className="text-muted-foreground max-w-2xl mx-auto text-sm md:text-base">
-            Des promeneurs et gardiens de chien vérifiés dans toute la France. 
-            Trouvez un professionnel de confiance dans votre ville.
+            Plus de 2 000 promeneurs et gardiens de chien vérifiés dans toute la France. 
+            Paris, Lyon, Marseille, Bordeaux... Trouvez un professionnel de confiance près de chez vous.
           </p>
         </div>
 

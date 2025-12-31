@@ -24,8 +24,8 @@ const Index = () => {
   return (
     <div className="min-h-screen bg-background">
       <SEOHead
-        title="DogWalking | Promeneurs de Chiens Vérifiés en France | Paiement Sécurisé"
-        description="Trouvez un promeneur de chien vérifié près de chez vous. Paiement escrow sécurisé, preuves photo obligatoires, assurance incluse. La plateforme n°1 en France."
+        title="Promenade de Chien Partout en France | Promeneurs Vérifiés | DogWalking"
+        description="Trouvez un promeneur de chien vérifié près de chez vous. Paiement escrow sécurisé, preuves photo obligatoires, assurance incluse jusqu'à 2M€. Service de promenade et garde dans toute la France."
         canonical="https://dogwalking.fr"
       />
       <Header />
