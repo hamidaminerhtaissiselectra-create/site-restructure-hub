@@ -119,7 +119,7 @@ export const HeroSection = () => {
             variants={itemVariants}
             className="text-4xl sm:text-5xl md:text-7xl font-bold mb-4 md:mb-6 leading-tight"
           >
-            Votre chien mérite la{" "}
+            Promenade de Chien{" "}
             <motion.span 
               className="bg-gradient-primary bg-clip-text text-transparent inline-block"
               animate={{ 
@@ -134,7 +134,7 @@ export const HeroSection = () => {
                 backgroundSize: "200% 200%",
               }}
             >
-              meilleure promenade
+              Partout en France
             </motion.span>
           </motion.h1>
 
@@ -142,8 +142,8 @@ export const HeroSection = () => {
             variants={itemVariants}
             className="text-lg md:text-2xl mb-6 md:mb-8 opacity-90 max-w-2xl mx-auto"
           >
-            Trouvez des promeneurs vérifiés près de chez vous. Paiement sécurisé en escrow, 
-            preuves photo/vidéo obligatoires à chaque mission.
+            Trouvez un promeneur de chien vérifié près de chez vous. 
+            Paiement escrow sécurisé, preuves photo obligatoires, assurance incluse.
           </motion.p>
 
           <motion.div 

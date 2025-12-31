@@ -88,11 +88,11 @@ export const WhySection = () => {
             Notre mission
           </motion.span>
           <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-5">
-            Une solution{" "}
+            Service de Promenade et Garde de Chien{" "}
             <span className="bg-gradient-to-r from-primary to-primary/70 bg-clip-text text-transparent">
-              simple et fiable
+              Sécurisé
             </span>
-            <br className="hidden sm:block" /> pour le bien-être de vos animaux
+            <br className="hidden sm:block" /> dans Toute la France
           </h2>
           <p className="text-base md:text-lg text-muted-foreground max-w-3xl mx-auto">
             Partout en France, nous connectons les propriétaires d'animaux avec des professionnels de confiance pour des services adaptés à chaque besoin.
