@@ -2,7 +2,7 @@ import { Button } from "@/components/ui/button";
 import { NotificationCenter } from "@/components/notifications/NotificationCenter";
 import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
-import { Menu, X, Dog, Home, Calendar, Shield, CreditCard, BookOpen, Users, MessageSquare, LogOut, MapPin } from "lucide-react";
+import { Menu, X, Dog, Home, Calendar, Shield, CreditCard, BookOpen, Users, MessageSquare, LogOut, MapPin, PlusCircle, FileText } from "lucide-react";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { useNavigate, Link } from "react-router-dom";
 
@@ -64,11 +64,11 @@ export const Header = () => {
   };
 
   const navLinks = [
-    { href: "/find-walkers", label: "Trouver un promeneur", icon: Dog },
+    { href: "/find-walkers", label: "Annonces & Services", icon: FileText },
+    { href: "/find-walkers?tab=deposer", label: "Déposer une demande", icon: PlusCircle },
     { href: "/tarifs", label: "Tarifs", icon: CreditCard },
     { href: "/securite", label: "Sécurité", icon: Shield },
-    { href: "/zones", label: "Zones couvertes", icon: MapPin },
-    { href: "/qui-sommes-nous", label: "À propos", icon: Users },
+    { href: "/zones", label: "Zones", icon: MapPin },
     { href: "/contact", label: "Contact", icon: MessageSquare },
   ];
 
