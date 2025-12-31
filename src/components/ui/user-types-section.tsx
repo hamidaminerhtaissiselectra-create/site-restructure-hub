@@ -59,7 +59,7 @@ export const UserTypesSection = () => {
               <Button 
                 className="w-full group" 
                 size="lg"
-                onClick={() => window.location.href = '/auth?type=owner'}
+                onClick={() => window.location.href = '/find-walkers'}
               >
                 Trouver un promeneur
                 <ArrowRight className="h-4 w-4 ml-2 group-hover:translate-x-1 transition-transform" />

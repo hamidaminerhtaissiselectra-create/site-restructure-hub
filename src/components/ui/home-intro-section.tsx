@@ -190,7 +190,7 @@ export const HomeIntroSection = () => {
             <Button 
               size="lg" 
               variant="secondary"
-              onClick={() => navigate("/trouver-promeneurs")}
+              onClick={() => navigate("/find-walkers")}
               className="group"
             >
               Trouver un promeneur

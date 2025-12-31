@@ -157,7 +157,7 @@ export const HeroSection = () => {
               <Button 
                 size="lg" 
                 className="text-base md:text-lg px-6 md:px-8 py-3 md:py-4 h-auto w-full sm:w-auto shadow-button" 
-                onClick={() => window.location.href = '/walkers'}
+                onClick={() => window.location.href = '/find-walkers'}
               >
                 Trouver un promeneur
               </Button>

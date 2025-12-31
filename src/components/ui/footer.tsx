@@ -44,7 +44,7 @@ export const Footer = () => {
           <div>
             <h3 className="font-semibold mb-3 text-sm uppercase tracking-wider">Propriétaires</h3>
             <ul className="space-y-2 text-sm text-white/70">
-              <li><a href="/walkers" className="hover:text-white transition-colors">Trouver un promeneur</a></li>
+              <li><a href="/find-walkers" className="hover:text-white transition-colors">Trouver un promeneur</a></li>
               <li><a href="/securite" className="hover:text-white transition-colors">Notre sécurité</a></li>
               <li><a href="/zones" className="hover:text-white transition-colors">Zones d'intervention</a></li>
               <li><a href="/referral" className="hover:text-white transition-colors">Parrainage</a></li>
@@ -58,7 +58,7 @@ export const Footer = () => {
               <li><a href="/qui-sommes-nous" className="hover:text-white transition-colors">Qui sommes-nous</a></li>
               <li><a href="/blog" className="hover:text-white transition-colors">Blog</a></li>
               <li><a href="/walker/register" className="hover:text-white transition-colors">Devenir promeneur</a></li>
-              <li><a href="/auth" className="hover:text-white transition-colors">Connexion</a></li>
+              <li><a href="/contact" className="hover:text-white transition-colors">Contact</a></li>
             </ul>
           </div>
 

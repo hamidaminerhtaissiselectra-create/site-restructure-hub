@@ -2,7 +2,7 @@ import { Button } from "@/components/ui/button";
 import { NotificationCenter } from "@/components/notifications/NotificationCenter";
 import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
-import { Menu, X, Dog, Home, Calendar, Shield, CreditCard, BookOpen, Users, MessageSquare, LogOut } from "lucide-react";
+import { Menu, X, Dog, Home, Calendar, Shield, CreditCard, BookOpen, Users, MessageSquare, LogOut, MapPin } from "lucide-react";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { useNavigate, Link } from "react-router-dom";
 
@@ -67,8 +67,9 @@ export const Header = () => {
     { href: "/find-walkers", label: "Trouver un promeneur", icon: Dog },
     { href: "/tarifs", label: "Tarifs", icon: CreditCard },
     { href: "/securite", label: "Sécurité", icon: Shield },
-    { href: "/blog", label: "Blog", icon: BookOpen },
+    { href: "/zones", label: "Zones couvertes", icon: MapPin },
     { href: "/qui-sommes-nous", label: "À propos", icon: Users },
+    { href: "/contact", label: "Contact", icon: MessageSquare },
   ];
 
   const authLinks = isAuthenticated ? [
