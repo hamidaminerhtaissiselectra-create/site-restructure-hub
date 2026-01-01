@@ -656,12 +656,34 @@ const WalkerDashboard = () => {
                             </span>
                           </div>
                         </div>
-                        <div className="text-right shrink-0">
+                        <div className="text-right shrink-0 space-y-2">
                           <p className="font-bold text-lg text-green-600">{Number(booking.price || 0).toFixed(2)}€</p>
-                          <Button variant="outline" size="sm" className="mt-2 gap-1">
-                            <Camera className="h-3 w-3" />
-                            Preuve
-                          </Button>
+                          <div className="flex flex-col gap-1">
+                            {booking.status === 'confirmed' && (
+                              <Button 
+                                size="sm" 
+                                className="gap-1 bg-green-600 hover:bg-green-700"
+                                onClick={() => handleBookingAction(booking.id, 'in_progress' as any)}
+                              >
+                                <CheckCircle className="h-3 w-3" />
+                                Démarrer
+                              </Button>
+                            )}
+                            {booking.status === 'in_progress' && (
+                              <Button 
+                                size="sm" 
+                                className="gap-1"
+                                onClick={() => handleBookingAction(booking.id, 'completed' as any)}
+                              >
+                                <Camera className="h-3 w-3" />
+                                Terminer
+                              </Button>
+                            )}
+                            <Button variant="outline" size="sm" className="gap-1">
+                              <Camera className="h-3 w-3" />
+                              Preuve
+                            </Button>
+                          </div>
                         </div>
                       </div>
                     ))}
