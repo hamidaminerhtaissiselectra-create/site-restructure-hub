@@ -2,22 +2,16 @@ import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
+import { BrowserRouter, Routes, Route, useLocation, Navigate } from "react-router-dom";
 import { HelmetProvider } from "react-helmet-async";
 import { useEffect } from "react";
 import Index from "./pages/Index";
 import ServicePage from "./pages/ServicePage";
 import Auth from "./pages/Auth";
-import Dashboard from "./pages/Dashboard";
-import AddDog from "./pages/AddDog";
 import FindWalkers from "./pages/FindWalkers";
-import MyBookings from "./pages/MyBookings";
 import BookingDetails from "./pages/BookingDetails";
 import BookWalk from "./pages/BookWalk";
 import WalkerRegister from "./pages/WalkerRegister";
-import WalkerDashboard from "./pages/WalkerDashboard";
-import WalkerEarnings from "./pages/WalkerEarnings";
-import Profile from "./pages/Profile";
 import Tarifs from "./pages/Tarifs";
 import Securite from "./pages/Securite";
 import Messages from "./pages/Messages";
@@ -26,13 +20,11 @@ import AdminDashboard from "./pages/AdminDashboard";
 import Referral from "./pages/Referral";
 import NotFound from "./pages/NotFound";
 import LocalZone from "./pages/LocalZone";
-import AllZones from "./pages/AllZones";
 import MentionsLegales from "./pages/MentionsLegales";
 import CGU from "./pages/CGU";
 import Confidentialite from "./pages/Confidentialite";
 import WalkerProfile from "./pages/WalkerProfile";
 import QuiSommesNous from "./pages/QuiSommesNous";
-import ProcheDeVous from "./pages/ProcheDeVous";
 import DepartmentZone from "./pages/DepartmentZone";
 import Contact from "./pages/Contact";
 import ServicePromenade from "./pages/services/ServicePromenade";
@@ -42,6 +34,11 @@ import ServiceDogSitting from "./pages/services/ServiceDogSitting";
 import ServicePetSitting from "./pages/services/ServicePetSitting";
 import ServiceMarcheReguliere from "./pages/services/ServiceMarcheReguliere";
 import BlogArticle from "./pages/BlogArticle";
+// Nouvelles pages fusionnées
+import ServicesLocaux from "./pages/ServicesLocaux";
+import MonCompte from "./pages/MonCompte";
+import EspacePromeneur from "./pages/EspacePromeneur";
+
 const queryClient = new QueryClient();
 
 // ScrollToTop component that scrolls to top on route change
@@ -74,18 +71,28 @@ const App = () => (
             <Route path="/services/pet-sitting" element={<ServicePetSitting />} />
             <Route path="/services/marche-reguliere" element={<ServiceMarcheReguliere />} />
             <Route path="/auth" element={<Auth />} />
-            <Route path="/dashboard" element={<Dashboard />} />
-            <Route path="/dogs/add" element={<AddDog />} />
+            
+            {/* Pages fusionnées */}
+            <Route path="/mon-compte" element={<MonCompte />} />
+            <Route path="/espace-promeneur" element={<EspacePromeneur />} />
+            <Route path="/services-locaux" element={<ServicesLocaux />} />
+            
+            {/* Redirections des anciennes routes */}
+            <Route path="/dashboard" element={<Navigate to="/mon-compte" replace />} />
+            <Route path="/profile" element={<Navigate to="/mon-compte?tab=profil" replace />} />
+            <Route path="/dogs/add" element={<Navigate to="/mon-compte?tab=chiens" replace />} />
+            <Route path="/bookings" element={<Navigate to="/mon-compte?tab=reservations" replace />} />
+            <Route path="/walker/dashboard" element={<Navigate to="/espace-promeneur" replace />} />
+            <Route path="/walker/earnings" element={<Navigate to="/espace-promeneur?tab=revenus" replace />} />
+            <Route path="/pres-de-vous" element={<Navigate to="/services-locaux" replace />} />
+            <Route path="/zones" element={<Navigate to="/services-locaux" replace />} />
+            
             <Route path="/walkers" element={<FindWalkers />} />
             <Route path="/find-walkers" element={<FindWalkers />} />
             <Route path="/walker/:walkerId" element={<WalkerProfile />} />
-            <Route path="/bookings" element={<MyBookings />} />
             <Route path="/bookings/:id" element={<BookingDetails />} />
             <Route path="/book/:walkerId" element={<BookWalk />} />
             <Route path="/walker/register" element={<WalkerRegister />} />
-            <Route path="/walker/dashboard" element={<WalkerDashboard />} />
-            <Route path="/walker/earnings" element={<WalkerEarnings />} />
-            <Route path="/profile" element={<Profile />} />
             <Route path="/tarifs" element={<Tarifs />} />
             <Route path="/securite" element={<Securite />} />
             <Route path="/messages" element={<Messages />} />
@@ -95,10 +102,8 @@ const App = () => (
             <Route path="/referral" element={<Referral />} />
             {/* About & Regional SEO */}
             <Route path="/qui-sommes-nous" element={<QuiSommesNous />} />
-            <Route path="/pres-de-vous" element={<ProcheDeVous />} />
             <Route path="/contact" element={<Contact />} />
             {/* Local SEO Pages */}
-            <Route path="/zones" element={<AllZones />} />
             <Route path="/zone/departement/:slug" element={<DepartmentZone />} />
             <Route path="/zone/:slug" element={<LocalZone />} />
             <Route path="/zone/:slug/:service" element={<LocalZone />} />
