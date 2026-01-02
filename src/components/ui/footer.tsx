@@ -36,7 +36,7 @@ export const Footer = () => {
               <li><a href="/services/garde" className="hover:text-white transition-colors">Garde de chien</a></li>
               <li><a href="/services/visite" className="hover:text-white transition-colors">Visite à domicile</a></li>
               <li><a href="/tarifs" className="hover:text-white transition-colors">Nos tarifs</a></li>
-              <li><a href="/pres-de-vous" className="hover:text-white transition-colors">Près de chez vous</a></li>
+              <li><a href="/nos-zones" className="hover:text-white transition-colors">Nos zones</a></li>
             </ul>
           </div>
 
@@ -45,8 +45,7 @@ export const Footer = () => {
             <h3 className="font-semibold mb-3 text-sm uppercase tracking-wider">Propriétaires</h3>
             <ul className="space-y-2 text-sm text-white/70">
               <li><a href="/find-walkers" className="hover:text-white transition-colors">Trouver un promeneur</a></li>
-              <li><a href="/securite" className="hover:text-white transition-colors">Notre sécurité</a></li>
-              <li><a href="/zones" className="hover:text-white transition-colors">Zones d'intervention</a></li>
+              <li><a href="/nos-zones" className="hover:text-white transition-colors">Zones d'intervention</a></li>
               <li><a href="/referral" className="hover:text-white transition-colors">Parrainage</a></li>
             </ul>
           </div>

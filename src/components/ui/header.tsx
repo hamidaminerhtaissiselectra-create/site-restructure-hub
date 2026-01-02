@@ -67,8 +67,8 @@ export const Header = () => {
     { href: "/find-walkers", label: "Annonces & Services", icon: FileText },
     { href: "/find-walkers?tab=deposer", label: "Déposer une demande", icon: PlusCircle },
     { href: "/tarifs", label: "Tarifs", icon: CreditCard },
-    { href: "/securite", label: "Sécurité", icon: Shield },
-    { href: "/zones", label: "Zones", icon: MapPin },
+    
+    { href: "/nos-zones", label: "Nos zones", icon: MapPin },
     { href: "/contact", label: "Contact", icon: MessageSquare },
   ];
 
