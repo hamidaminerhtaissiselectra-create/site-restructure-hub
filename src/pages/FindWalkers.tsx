@@ -14,7 +14,6 @@ import { SEOHead } from "@/components/seo/SEOHead";
 import { FloatingContact } from "@/components/ui/floating-contact";
 import { SearchFilters } from "@/components/booking/SearchFilters";
 import { WalkerCard } from "@/components/booking/WalkerCard";
-import { InteractiveMap } from "@/components/booking/InteractiveMap";
 import { OwnerSection, ProviderSection, ServiceRequestCard, RequestFilters, ServiceRequest, ServiceRequestForm } from "@/components/hub";
 import { useWalkerMatching, MatchingCriteria } from "@/hooks/useWalkerMatching";
 
@@ -492,35 +491,18 @@ const FindWalkers = () => {
                     </CardContent>
                   </Card>
                 ) : (
-                  <div className="space-y-6">
-                    {/* Interactive Map */}
-                    <InteractiveMap
-                      walkers={walkers.map(w => ({
-                        id: w.user_id,
-                        name: w.first_name || "Promeneur",
-                        rating: w.rating || 5,
-                        verified: w.verified || false,
-                        hourly_rate: w.hourly_rate || 15,
-                        city: w.city,
-                      }))}
-                      onWalkerSelect={(walkerId) => navigate(`/walker/${walkerId}`)}
-                      centerCity={searchCity || "Votre zone"}
-                    />
-                    
-                    {/* Walker Cards Grid */}
-                    <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                      {walkers.map((walker, index) => (
-                        <WalkerCard
-                          key={walker.id}
-                          walker={walker}
-                          index={index}
-                          onBook={handleBookWalker}
-                          onFavorite={handleToggleFavorite}
-                          isFavorite={favorites.has(walker.user_id)}
-                          isStarSitter={walker.verified && (walker.rating || 0) >= 4.8}
-                        />
-                      ))}
-                    </div>
+                  <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                    {walkers.map((walker, index) => (
+                      <WalkerCard
+                        key={walker.id}
+                        walker={walker}
+                        index={index}
+                        onBook={handleBookWalker}
+                        onFavorite={handleToggleFavorite}
+                        isFavorite={favorites.has(walker.user_id)}
+                        isStarSitter={walker.verified && (walker.rating || 0) >= 4.8}
+                      />
+                    ))}
                   </div>
                 )}
               </motion.div>

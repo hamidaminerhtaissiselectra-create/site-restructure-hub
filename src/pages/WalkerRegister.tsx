@@ -7,8 +7,7 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { useNavigate } from 'react-router-dom';
 import { toast } from "@/hooks/use-toast";
-import { Briefcase, Euro, Clock, Shield, CheckCircle, Users, Upload } from 'lucide-react';
-import { Badge } from "@/components/ui/badge";
+import { Briefcase, Euro, Clock, Shield, CheckCircle, Users } from 'lucide-react';
 import { SEOHead } from "@/components/seo/SEOHead";
 import { FloatingContact } from "@/components/ui/floating-contact";
 import { motion } from "framer-motion";
@@ -34,10 +33,9 @@ const WalkerRegister = () => {
     e.preventDefault();
     toast({
       title: "Candidature envoyée !",
-      description: "Vous allez être redirigé vers la page de soumission des documents.",
+      description: "Nous étudierons votre demande et vous recontacterons sous 48h.",
     });
-    // Redirection vers page documents au lieu de l'accueil
-    navigate('/walker/dashboard?tab=documents');
+    navigate('/');
   };
 
   const advantages = [
@@ -143,51 +141,39 @@ const WalkerRegister = () => {
                 </CardHeader>
                 <CardContent>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <div className="flex items-start gap-3 p-3 rounded-lg bg-muted/50 border border-border hover:border-primary/30 transition-colors">
-                      <div className="w-10 h-10 rounded-full bg-blue-100 dark:bg-blue-900/30 flex items-center justify-center flex-shrink-0">
-                        <Upload className="h-5 w-5 text-blue-600" />
+                    <div className="flex items-start gap-3">
+                      <div className="w-6 h-6 rounded-full bg-primary/20 flex items-center justify-center flex-shrink-0 mt-0.5">
+                        <CheckCircle className="h-4 w-4 text-primary" />
                       </div>
-                      <div className="flex-1">
-                        <div className="flex items-center justify-between">
-                          <p className="font-medium">Pièce d'identité</p>
-                          <Badge variant="outline" className="text-xs">À soumettre</Badge>
-                        </div>
+                      <div>
+                        <p className="font-medium">Pièce d'identité</p>
                         <p className="text-sm text-muted-foreground">CNI ou passeport en cours de validité</p>
                       </div>
                     </div>
-                    <div className="flex items-start gap-3 p-3 rounded-lg bg-muted/50 border border-border hover:border-primary/30 transition-colors">
-                      <div className="w-10 h-10 rounded-full bg-blue-100 dark:bg-blue-900/30 flex items-center justify-center flex-shrink-0">
-                        <Upload className="h-5 w-5 text-blue-600" />
+                    <div className="flex items-start gap-3">
+                      <div className="w-6 h-6 rounded-full bg-primary/20 flex items-center justify-center flex-shrink-0 mt-0.5">
+                        <CheckCircle className="h-4 w-4 text-primary" />
                       </div>
-                      <div className="flex-1">
-                        <div className="flex items-center justify-between">
-                          <p className="font-medium">Casier judiciaire</p>
-                          <Badge variant="outline" className="text-xs">À soumettre</Badge>
-                        </div>
+                      <div>
+                        <p className="font-medium">Casier judiciaire</p>
                         <p className="text-sm text-muted-foreground">Bulletin n°3 ou attestation sur l'honneur</p>
                       </div>
                     </div>
-                    <div className="flex items-start gap-3 p-3 rounded-lg bg-muted/50 border border-border hover:border-primary/30 transition-colors">
-                      <div className="w-10 h-10 rounded-full bg-blue-100 dark:bg-blue-900/30 flex items-center justify-center flex-shrink-0">
-                        <Upload className="h-5 w-5 text-blue-600" />
+                    <div className="flex items-start gap-3">
+                      <div className="w-6 h-6 rounded-full bg-primary/20 flex items-center justify-center flex-shrink-0 mt-0.5">
+                        <CheckCircle className="h-4 w-4 text-primary" />
                       </div>
-                      <div className="flex-1">
-                        <div className="flex items-center justify-between">
-                          <p className="font-medium">Assurance RC</p>
-                          <Badge variant="outline" className="text-xs">À soumettre</Badge>
-                        </div>
+                      <div>
+                        <p className="font-medium">Assurance RC</p>
                         <p className="text-sm text-muted-foreground">Assurance habitation ou RC professionnelle</p>
                       </div>
                     </div>
-                    <div className="flex items-start gap-3 p-3 rounded-lg bg-muted/50 border border-border hover:border-primary/30 transition-colors">
-                      <div className="w-10 h-10 rounded-full bg-blue-100 dark:bg-blue-900/30 flex items-center justify-center flex-shrink-0">
-                        <Upload className="h-5 w-5 text-blue-600" />
+                    <div className="flex items-start gap-3">
+                      <div className="w-6 h-6 rounded-full bg-primary/20 flex items-center justify-center flex-shrink-0 mt-0.5">
+                        <CheckCircle className="h-4 w-4 text-primary" />
                       </div>
-                      <div className="flex-1">
-                        <div className="flex items-center justify-between">
-                          <p className="font-medium">Photo de profil</p>
-                          <Badge variant="outline" className="text-xs">À soumettre</Badge>
-                        </div>
+                      <div>
+                        <p className="font-medium">Photo de profil</p>
                         <p className="text-sm text-muted-foreground">Photo réelle et professionnelle</p>
                       </div>
                     </div>
