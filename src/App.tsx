@@ -19,20 +19,20 @@ import WalkerDashboard from "./pages/WalkerDashboard";
 import WalkerEarnings from "./pages/WalkerEarnings";
 import Profile from "./pages/Profile";
 import Tarifs from "./pages/Tarifs";
-import Securite from "./pages/Securite";
+
 import Messages from "./pages/Messages";
 import Blog from "./pages/Blog";
 import AdminDashboard from "./pages/AdminDashboard";
 import Referral from "./pages/Referral";
 import NotFound from "./pages/NotFound";
 import LocalZone from "./pages/LocalZone";
-import AllZones from "./pages/AllZones";
+
 import MentionsLegales from "./pages/MentionsLegales";
 import CGU from "./pages/CGU";
 import Confidentialite from "./pages/Confidentialite";
 import WalkerProfile from "./pages/WalkerProfile";
 import QuiSommesNous from "./pages/QuiSommesNous";
-import ProcheDeVous from "./pages/ProcheDeVous";
+import NosZones from "./pages/NosZones";
 import DepartmentZone from "./pages/DepartmentZone";
 import Contact from "./pages/Contact";
 import ServicePromenade from "./pages/services/ServicePromenade";
@@ -87,7 +87,7 @@ const App = () => (
             <Route path="/walker/earnings" element={<WalkerEarnings />} />
             <Route path="/profile" element={<Profile />} />
             <Route path="/tarifs" element={<Tarifs />} />
-            <Route path="/securite" element={<Securite />} />
+            
             <Route path="/messages" element={<Messages />} />
             <Route path="/blog" element={<Blog />} />
             <Route path="/blog/:slug" element={<BlogArticle />} />
@@ -95,10 +95,11 @@ const App = () => (
             <Route path="/referral" element={<Referral />} />
             {/* About & Regional SEO */}
             <Route path="/qui-sommes-nous" element={<QuiSommesNous />} />
-            <Route path="/pres-de-vous" element={<ProcheDeVous />} />
             <Route path="/contact" element={<Contact />} />
-            {/* Local SEO Pages */}
-            <Route path="/zones" element={<AllZones />} />
+            {/* Local SEO Pages - Unified zones page */}
+            <Route path="/nos-zones" element={<NosZones />} />
+            <Route path="/zones" element={<NosZones />} />
+            <Route path="/pres-de-vous" element={<NosZones />} />
             <Route path="/zone/departement/:slug" element={<DepartmentZone />} />
             <Route path="/zone/:slug" element={<LocalZone />} />
             <Route path="/zone/:slug/:service" element={<LocalZone />} />

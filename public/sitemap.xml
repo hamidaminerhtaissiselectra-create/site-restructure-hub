@@ -17,24 +17,9 @@
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://dogwalking.fr/securite</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://dogwalking.fr/blog</loc>
+    <loc>https://dogwalking.fr/nos-zones</loc>
     <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://dogwalking.fr/qui-sommes-nous</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://dogwalking.fr/pres-de-vous</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
+    <priority>0.8</priority>
   </url>
   
   <!-- Pages services PILIERS SEO (6 services principaux) -->
@@ -123,10 +108,25 @@
     <priority>0.3</priority>
   </url>
   
-  <!-- Zones locales (page index) -->
+  <!-- Autres pages -->
   <url>
-    <loc>https://dogwalking.fr/zones</loc>
+    <loc>https://dogwalking.fr/blog</loc>
     <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://dogwalking.fr/qui-sommes-nous</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://dogwalking.fr/contact</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://dogwalking.fr/referral</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
   </url>
 </urlset>
