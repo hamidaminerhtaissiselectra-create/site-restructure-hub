@@ -42,6 +42,7 @@ import ServiceDogSitting from "./pages/services/ServiceDogSitting";
 import ServicePetSitting from "./pages/services/ServicePetSitting";
 import ServiceMarcheReguliere from "./pages/services/ServiceMarcheReguliere";
 import BlogArticle from "./pages/BlogArticle";
+import Aide from "./pages/Aide";
 const queryClient = new QueryClient();
 
 // ScrollToTop component that scrolls to top on route change
@@ -96,6 +97,9 @@ const App = () => (
             {/* About & Regional SEO */}
             <Route path="/qui-sommes-nous" element={<QuiSommesNous />} />
             <Route path="/contact" element={<Contact />} />
+            <Route path="/aide" element={<Aide />} />
+            <Route path="/faq" element={<Aide />} />
+            <Route path="/help" element={<Aide />} />
             {/* Local SEO Pages - Unified zones page */}
             <Route path="/nos-zones" element={<NosZones />} />
             <Route path="/zones" element={<NosZones />} />
