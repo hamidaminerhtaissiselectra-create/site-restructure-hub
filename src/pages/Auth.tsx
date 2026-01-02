@@ -31,18 +31,13 @@ const Auth = () => {
   }, [navigate]);
 
   const handlePostAuthRedirect = () => {
-    // Check for pending booking (with try-catch for iframe contexts)
-    try {
-      const pendingBooking = sessionStorage.getItem('pendingBooking');
-      if (pendingBooking) {
-        const { returnUrl } = JSON.parse(pendingBooking);
-        sessionStorage.removeItem('pendingBooking');
-        navigate(returnUrl);
-        return;
-      }
-    } catch (e) {
-      // sessionStorage not available in some iframe contexts
-      console.warn('sessionStorage not available');
+    // Check for pending booking
+    const pendingBooking = sessionStorage.getItem('pendingBooking');
+    if (pendingBooking) {
+      const { returnUrl } = JSON.parse(pendingBooking);
+      sessionStorage.removeItem('pendingBooking');
+      navigate(returnUrl);
+      return;
     }
     
     // Check for redirect URL in params
@@ -51,7 +46,7 @@ const Auth = () => {
       return;
     }
     
-    navigate('/mon-compte');
+    navigate('/dashboard');
   };
 
   const handleLogin = async (e: React.FormEvent) => {
