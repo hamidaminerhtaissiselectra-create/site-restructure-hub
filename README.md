@@ -19,33 +19,67 @@
 
 ---
 
+## 🎯 Objectif : Surpasser Rover.com
+
+### Analyse Concurrentielle Rover.com
+
+| Fonctionnalité Rover | Status DogWalking | Amélioration |
+|---------------------|-------------------|--------------|
+| Recherche par localisation | ✅ Fait | + Filtres avancés |
+| Profils promeneurs | ✅ Fait | + Badges, vérification FR |
+| Réservation en ligne | ✅ Fait | + 3 étapes simplifiées |
+| Messagerie | ✅ Fait | + Temps réel Supabase |
+| Paiement sécurisé | 🔜 En cours | + Escrow 48h |
+| Avis certifiés | ✅ Fait | + Post-service uniquement |
+| Application mobile | ⚪ À faire | PWA + App native |
+| Suivi GPS | ⚪ À faire | + Temps réel |
+| Couverture France | ✅ Fait | + SEO local 100 villes |
+| Support client | 🔜 En cours | + Chat 7j/7 |
+
+### Avantages Compétitifs DogWalking
+
+1. **🇫🇷 Focus France** - Vérification adaptée (casier B3, CNI française)
+2. **🔒 Sécurité renforcée** - Documents vérifiés manuellement sous 48h
+3. **💰 Tarification transparente** - Commission 13% vs 20% Rover
+4. **📸 Preuves obligatoires** - Photos/vidéos à chaque promenade
+5. **🎁 Programme parrainage** - 15€ parrain, 10€ filleul
+6. **🌍 SEO local** - Pages dédiées par ville/département
+
+---
+
 ## 🚀 Fonctionnalités Principales
 
 ### 👤 Parcours Propriétaire
-| Fonctionnalité | Description |
-|---------------|-------------|
-| **Recherche intelligente** | Filtres par ville, service, tarif, notes |
-| **Inscription différée** | Explorer et configurer avant de créer un compte |
-| **Réservation 3 étapes** | Service → Détails → Confirmation |
-| **Dashboard complet** | Stats, réservations, chiens, favoris |
-| **Messagerie temps réel** | Communication directe avec les promeneurs |
-| **Système de parrainage** | Gagnez des crédits en parrainant |
+| Fonctionnalité | Description | Status |
+|---------------|-------------|--------|
+| **Recherche intelligente** | Filtres par ville, service, tarif, notes | ✅ |
+| **Dashboard unifié** | 7 onglets (Aperçu, Chiens, Réservations, Promeneurs, Messages, Parrainage, Profil) | ✅ |
+| **Upload photo profil** | Stockage Supabase bucket 'avatars' | ✅ |
+| **Upload photo chien** | Stockage Supabase bucket 'dog-photos' | ✅ |
+| **Barre de recherche dashboard** | Actions rapides avec ⌘K | ✅ |
+| **Paramètres avancés** | Thème, notifications, confidentialité | ✅ |
+| **Réservation 3 étapes** | Service → Détails → Confirmation | ✅ |
+| **Messagerie temps réel** | Communication directe promeneurs | ✅ |
+| **Système parrainage** | Code unique, tracking, récompenses | ✅ |
 
 ### 🚶 Parcours Promeneur
-| Fonctionnalité | Description |
-|---------------|-------------|
-| **Inscription vérifiée** | Upload CNI, casier, assurance |
-| **Dashboard professionnel** | Gains, demandes, statistiques |
-| **Gestion des missions** | Accepter/refuser, envoyer preuves |
-| **Profil public SEO** | Page personnalisée avec avis |
-| **Badges et distinctions** | Valorisation de l'expérience |
+| Fonctionnalité | Description | Status |
+|---------------|-------------|--------|
+| **Dashboard unifié** | 7 onglets (Aperçu, Missions, Gains, Dispo, Messages, Performance, Profil) | ✅ |
+| **Upload documents** | CNI, casier B3, assurance RC Pro via Supabase Storage | ✅ |
+| **Gestion tarifs** | Tarif horaire, zone, chiens max, tarification dynamique | ✅ |
+| **Upload photo profil** | Stockage Supabase bucket 'avatars' | ✅ |
+| **Badges et distinctions** | Vérifié, Top Promeneur, etc. | ✅ |
+| **Statistiques performance** | Taux acceptation, note moyenne, revenus | ✅ |
+| **Profil public SEO** | Page personnalisée avec avis | ✅ |
 
 ### 🔒 Sécurité & Confiance
-- Vérification manuelle des documents sous 48h
-- Paiement escrow (24-48h avant libération)
-- Preuves photo/vidéo obligatoires
-- Avis certifiés (uniquement après service)
-- Support 7j/7
+- ✅ Vérification manuelle des documents sous 48h
+- ✅ Upload documents vers bucket privé 'walker-documents'
+- ✅ Preuves photo/vidéo via bucket privé 'walk-proofs'
+- 🔜 Paiement escrow (24-48h avant libération)
+- ✅ Avis certifiés (uniquement après service)
+- 🔜 Support 7j/7
 
 ---
 
@@ -59,41 +93,10 @@
 | **Tailwind CSS** | Styling utility-first | 3.4 |
 | **Shadcn/UI** | Composants accessibles | Latest |
 | **Framer Motion** | Animations fluides | 12.x |
-| **Supabase** | Backend complet | 2.x |
+| **Supabase** | Backend complet (Auth, DB, Storage, Edge Functions) | 2.x |
 | **React Router** | Navigation SPA | 6.x |
 | **React Query** | Data fetching & cache | 5.x |
 | **React Helmet** | SEO dynamique | 2.x |
-
----
-
-## 📦 Installation & Démarrage
-
-```bash
-# Cloner le repository
-git clone https://github.com/votre-username/dogwalking.git
-cd dogwalking
-
-# Installer les dépendances (pnpm recommandé)
-pnpm install
-
-# Lancer en développement
-pnpm dev
-
-# Build production
-pnpm build
-
-# Preview production
-pnpm preview
-```
-
-### Variables d'environnement
-
-Créer un fichier `.env` à la racine :
-
-```env
-VITE_SUPABASE_URL=https://votre-projet.supabase.co
-VITE_SUPABASE_PUBLISHABLE_KEY=eyJhbGciOiJIUzI1NiIs...
-```
 
 ---
 
@@ -102,193 +105,148 @@ VITE_SUPABASE_PUBLISHABLE_KEY=eyJhbGciOiJIUzI1NiIs...
 ```
 src/
 ├── assets/                    # Images et ressources statiques
-│   ├── pages/                 # Images hero des pages (12 fichiers)
-│   ├── homepage/              # Images sections homepage (5 fichiers)
-│   ├── services/              # Images services détaillés (28 fichiers)
+│   ├── pages/                 # Images hero des pages
+│   ├── homepage/              # Images sections homepage
+│   ├── services/              # Images services détaillés
 │   ├── testimonials/          # Photos témoignages
 │   └── trust/                 # Images confiance et sécurité
 │
 ├── components/
+│   ├── dashboard/
+│   │   ├── owner/             # Composants dashboard propriétaire
+│   │   │   ├── OverviewTab.tsx
+│   │   │   ├── DogsTab.tsx
+│   │   │   ├── BookingsTab.tsx
+│   │   │   ├── WalkersTab.tsx
+│   │   │   ├── MessagesTab.tsx
+│   │   │   ├── ReferralTab.tsx
+│   │   │   └── ProfileTab.tsx
+│   │   ├── walker/            # Composants dashboard promeneur
+│   │   │   ├── OverviewTab.tsx
+│   │   │   ├── BookingsTab.tsx
+│   │   │   ├── EarningsTab.tsx
+│   │   │   ├── AvailabilityTab.tsx
+│   │   │   ├── MessagesTab.tsx
+│   │   │   ├── PerformanceTab.tsx
+│   │   │   └── ProfileTab.tsx
+│   │   └── shared/            # Composants partagés
+│   │       ├── DashboardSearch.tsx    # Recherche ⌘K
+│   │       ├── AvatarUpload.tsx       # Upload photo profil
+│   │       ├── DogPhotoUpload.tsx     # Upload photo chien
+│   │       ├── DocumentUpload.tsx     # Upload documents vérification
+│   │       ├── PricingSettings.tsx    # Gestion tarifs
+│   │       └── AdvancedSettings.tsx   # Paramètres avancés
 │   ├── seo/
 │   │   └── SEOHead.tsx        # Composant SEO avec Schema.org
 │   └── ui/                    # 50+ composants Shadcn personnalisés
-│       ├── header.tsx         # Navigation responsive
-│       ├── footer.tsx         # Footer 5 colonnes
-│       ├── floating-contact.tsx # Bulle contact flottante
-│       ├── hero-section.tsx   # Hero avec parallax
-│       ├── services-section.tsx
-│       ├── testimonials-section.tsx
-│       └── ...
 │
 ├── pages/
-│   ├── Index.tsx              # Homepage SEO complète
-│   ├── Auth.tsx               # Login/Register optimisé UX
-│   ├── Dashboard.tsx          # Espace propriétaire
-│   ├── WalkerDashboard.tsx    # Espace promeneur
-│   ├── FindWalkers.tsx        # Recherche avec filtres
-│   ├── BookWalk.tsx           # Réservation 3 étapes
-│   ├── Profile.tsx            # Gestion profil
+│   ├── dashboard/
+│   │   ├── OwnerDashboard.tsx    # Dashboard propriétaire unifié
+│   │   └── WalkerDashboard.tsx   # Dashboard promeneur unifié
 │   ├── services/              # 6 Pages piliers SEO
-│   │   ├── ServicePromenade.tsx    # ~1550 mots
-│   │   ├── ServiceGarde.tsx        # ~1450 mots
-│   │   ├── ServiceVisite.tsx       # ~1500 mots
-│   │   ├── ServiceDogSitting.tsx   # ~1600 mots
-│   │   ├── ServicePetSitting.tsx   # ~1550 mots
-│   │   └── ServiceMarcheReguliere.tsx # ~1580 mots
 │   └── ...
 │
 ├── hooks/                     # Hooks personnalisés
-│   ├── use-toast.ts
-│   ├── use-mobile.tsx
-│   ├── useParallax.tsx
-│   └── useScrollToTop.tsx
-│
-├── integrations/
-│   └── supabase/
-│       ├── client.ts          # Client Supabase configuré
-│       └── types.ts           # Types auto-générés
-│
-├── data/
-│   ├── localSeoData.ts        # Données zones SEO local
-│   └── servicesData.ts        # Configuration services
-│
-├── lib/
-│   └── utils.ts               # Utilitaires (cn, etc.)
-│
-├── index.css                  # Design tokens HSL
-├── App.tsx                    # Routes et providers
-└── main.tsx                   # Point d'entrée
+├── integrations/supabase/     # Client et types Supabase
+├── data/                      # Données statiques
+└── lib/                       # Utilitaires
 ```
 
 ---
 
 ## 🌐 Routes de l'Application
 
-### Pages Publiques
-| Route | Description | SEO |
-|-------|-------------|-----|
-| `/` | Page d'accueil | ✅ Schema LocalBusiness |
-| `/tarifs` | Grille tarifaire | ✅ FAQ Schema |
-| `/securite` | Garanties et sécurité | ✅ FAQ Schema |
-| `/blog` | Articles et conseils | ✅ Blog Schema |
-| `/qui-sommes-nous` | Présentation équipe | ✅ |
-| `/walkers` | Recherche promeneurs | ✅ |
-| `/walker/:id` | Profil promeneur | ✅ Dynamique |
-
-### 6 Pages Services Piliers SEO
-| Route | Service | Mots | FAQ |
-|-------|---------|------|-----|
-| `/services/promenade` | Promenade de chien | ~1550 | 6 questions |
-| `/services/garde` | Garde de chiens | ~1450 | 6 questions |
-| `/services/visite` | Visite à domicile | ~1500 | 6 questions |
-| `/services/dog-sitting` | Dog Sitting | ~1600 | 8 questions |
-| `/services/pet-sitting` | Pet Sitting Multi-Animaux | ~1550 | 8 questions |
-| `/services/marche-reguliere` | Marche Régulière | ~1580 | 8 questions |
-
-### Espace Utilisateur
+### Dashboards Unifiés (Nouveaux)
 | Route | Description |
 |-------|-------------|
-| `/auth` | Connexion / Inscription |
-| `/dashboard` | Tableau de bord propriétaire |
-| `/walker/dashboard` | Tableau de bord promeneur |
-| `/bookings` | Mes réservations |
-| `/book/:walkerId` | Réserver une prestation |
-| `/profile` | Mon profil |
-| `/messages` | Messagerie |
+| `/dashboard?tab=apercu` | Vue d'ensemble propriétaire |
+| `/dashboard?tab=chiens` | Gestion des chiens |
+| `/dashboard?tab=reservations` | Historique réservations |
+| `/dashboard?tab=promeneurs` | Favoris et recherche |
+| `/dashboard?tab=messages` | Messagerie |
+| `/dashboard?tab=parrainage` | Programme parrainage |
+| `/dashboard?tab=profil` | Profil et paramètres |
+| `/walker/dashboard?tab=apercu` | Vue d'ensemble promeneur |
+| `/walker/dashboard?tab=missions` | Gestion missions |
+| `/walker/dashboard?tab=gains` | Revenus et retraits |
+| `/walker/dashboard?tab=disponibilites` | Planning |
+| `/walker/dashboard?tab=messages` | Messagerie |
+| `/walker/dashboard?tab=performance` | Statistiques |
+| `/walker/dashboard?tab=profil` | Profil, tarifs, documents |
 
 ---
 
-## 💾 Base de Données Supabase
+## 💾 Supabase Storage Buckets
 
-### Tables Principales
-
-| Table | Description | RLS |
-|-------|-------------|-----|
-| `profiles` | Profils utilisateurs | ✅ |
-| `dogs` | Chiens enregistrés | ✅ |
-| `walker_profiles` | Profils promeneurs | ✅ |
-| `walker_documents` | Documents vérification | ✅ |
-| `bookings` | Réservations | ✅ |
-| `messages` | Messages temps réel | ✅ |
-| `reviews` | Avis et notes | ✅ |
-| `notifications` | Notifications | ✅ |
-
-### Enums
-- `service_type`: promenade, garde, visite, veterinaire
-- `booking_status`: pending, confirmed, in_progress, completed, cancelled
-- `user_type`: owner, walker, both
+| Bucket | Public | Usage |
+|--------|--------|-------|
+| `avatars` | ✅ Oui | Photos profil utilisateurs |
+| `dog-photos` | ✅ Oui | Photos des chiens |
+| `walker-documents` | ❌ Non | Documents vérification (CNI, casier, assurance) |
+| `walk-proofs` | ❌ Non | Preuves photo/vidéo des promenades |
 
 ---
 
-## 🎨 Design System
+## 📅 Roadmap - Surpasser Rover.com
 
-### Tokens CSS (HSL)
-```css
---primary: /* Couleur principale */
---secondary: /* Couleur secondaire */
---accent: /* Accent */
---background: /* Fond */
---foreground: /* Texte */
---muted: /* Éléments discrets */
---destructive: /* Erreurs */
-```
+### ✅ Phase 1 : Fondations (COMPLET)
+- [x] Authentification email Supabase
+- [x] Dashboards unifiés propriétaire/promeneur (7 onglets chacun)
+- [x] Upload photos profil (humain + chien)
+- [x] Upload documents vérification promeneurs
+- [x] Gestion tarifs promeneurs (dynamique, zone, chiens max)
+- [x] Paramètres avancés (thème, notifications, confidentialité)
+- [x] Barre de recherche intelligente ⌘K
+- [x] SEO complet 6 pages piliers
+- [x] Design responsive premium
 
-### Composants Clés
-- **Buttons** : 5 variantes (default, outline, ghost, secondary, destructive)
-- **Cards** : Ombres douces, hover effects
-- **Forms** : Validation, états d'erreur
-- **Modals** : Dialog Radix accessible
-- **Animations** : Framer Motion (fade, slide, scale, stagger)
+### 🔜 Phase 2 : Paiement & Transactions (EN COURS)
+- [ ] **Intégration Stripe Connect** - Paiements marketplace
+- [ ] **Edge function `create-checkout`** - Création session paiement
+- [ ] **Edge function `stripe-webhook`** - Gestion webhooks
+- [ ] **Paiement escrow** - Blocage 48h avant libération
+- [ ] **Facturation automatique** - Génération PDF
+- [ ] **Gestion remboursements** - Politique annulation
 
----
+### 🔜 Phase 3 : Communication (EN COURS)
+- [ ] **Emails transactionnels Resend** - Confirmations, rappels
+- [ ] **Notifications push** - Service workers PWA
+- [ ] **SMS alertes** - Twilio pour urgences
+- [ ] **Chat temps réel amélioré** - Indicateurs frappe, vu
 
-## 📈 SEO & Performance
+### ⚪ Phase 4 : Fonctionnalités Avancées
+- [ ] **Suivi GPS temps réel** - Carte live pendant promenade
+- [ ] **Calendrier synchronisé** - Google Calendar, iCal
+- [ ] **Récurrence réservations** - Abonnements hebdo/mensuel
+- [ ] **Multi-chiens** - Gestion pack famille
+- [ ] **Urgences** - Bouton SOS promeneur
 
-### Optimisations SEO
-- ✅ Meta tags dynamiques par page
-- ✅ Schema.org (LocalBusiness, FAQ, Service, Blog)
-- ✅ Sitemap XML automatique
-- ✅ Canonical URLs
-- ✅ Open Graph & Twitter Cards
-- ✅ Images avec alt descriptifs
-- ✅ Contenu 1300-1600 mots sur pages piliers
+### ⚪ Phase 5 : Mobile & Scale
+- [ ] **PWA optimisée** - Install, offline, push
+- [ ] **Application native** - React Native ou Flutter
+- [ ] **API publique** - Partenaires vétérinaires
+- [ ] **Expansion géographique** - Belgique, Suisse
 
-### Performance
-- Code splitting automatique (Vite)
-- Images optimisées
-- Lazy loading
-- Animations GPU-accelerated
-
----
-
-## 🔧 Configuration Supabase
-
-### Secrets requis
-| Secret | Usage |
-|--------|-------|
-| `SUPABASE_URL` | URL du projet |
-| `SUPABASE_ANON_KEY` | Clé publique |
-| `STRIPE_SECRET_KEY` | Paiements (optionnel) |
-| `RESEND_API_KEY` | Emails (optionnel) |
+### ⚪ Phase 6 : Administration
+- [ ] **Interface Admin sécurisée** - Gestion utilisateurs
+- [ ] **Modération documents** - Validation CNI/casier
+- [ ] **Tableau de bord analytics** - KPIs business
+- [ ] **Gestion litiges** - Médiation automatisée
 
 ---
 
-## 📅 Roadmap
+## 🏆 Objectifs vs Rover.com
 
-### ✅ Complété (v1.0)
-- [x] Authentification email
-- [x] Recherche et réservation
-- [x] Dashboards propriétaire/promeneur
-- [x] Messagerie temps réel
-- [x] SEO complet
-- [x] Design responsive
-
-### 🔜 Prochaines étapes
-- [ ] Intégration Stripe (paiement escrow)
-- [ ] Emails transactionnels
-- [ ] Upload documents promeneurs
-- [ ] Suivi GPS temps réel
-- [ ] Application mobile (PWA)
+| Métrique | Rover | DogWalking Cible |
+|----------|-------|------------------|
+| Commission | 20% | **13%** ✅ |
+| Vérification | Basique | **Manuelle 48h** ✅ |
+| Preuves mission | Optionnel | **Obligatoire** ✅ |
+| Assurance | 1M€ | **2M€** |
+| Support | Email | **Chat 7j/7** |
+| SEO local | Faible | **100 villes** ✅ |
+| Parrainage | 10€ | **15€/10€** ✅ |
 
 ---
 
@@ -298,10 +256,4 @@ MIT License - Voir [LICENSE](LICENSE)
 
 ---
 
-## 🤝 Contribution
-
-Les contributions sont bienvenues ! Voir [CONTRIBUTING.md](CONTRIBUTING.md) pour les guidelines.
-
----
-
-*Développé avec ❤️ pour les amoureux des chiens en France*
+*Développé avec ❤️ pour les amoureux des chiens en France - Objectif : Devenir le leader français 🇫🇷*

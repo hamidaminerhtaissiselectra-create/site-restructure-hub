@@ -11,6 +11,7 @@ import { Dog as DogIcon, Plus, Edit2, Trash2, Heart, Info, Camera } from 'lucide
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "@/hooks/use-toast";
 import { motion } from "framer-motion";
+import DogPhotoUpload from "@/components/dashboard/shared/DogPhotoUpload";
 
 const containerVariants = {
   hidden: { opacity: 0 },
@@ -250,6 +251,17 @@ const DogsTab = () => {
                     </div>
                   )}
                   <div className="absolute inset-0 bg-gradient-to-t from-background/80 to-transparent" />
+                  
+                  {/* Photo upload button */}
+                  <div className="absolute top-3 left-3">
+                    <DogPhotoUpload
+                      currentUrl={dog.photo_url}
+                      dogId={dog.id}
+                      dogName={dog.name}
+                      size="sm"
+                      onUploadComplete={() => fetchDogs()}
+                    />
+                  </div>
                   
                   {/* Quick actions */}
                   <div className="absolute top-3 right-3 flex gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
