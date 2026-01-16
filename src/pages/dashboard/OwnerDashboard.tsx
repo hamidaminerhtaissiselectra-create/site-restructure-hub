@@ -7,16 +7,16 @@ import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
-import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
 import { 
   Dog, Calendar, Search, Heart, MessageCircle, Gift, User, 
-  MapPin, Bell, Sparkles, ArrowRight, Settings, Star
+  MapPin, Bell, Sparkles, ArrowRight, Settings, Star, Plus
 } from 'lucide-react';
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "@/hooks/use-toast";
 import { motion, AnimatePresence } from "framer-motion";
 import { SEOHead } from "@/components/seo/SEOHead";
 import { FloatingContact } from "@/components/ui/floating-contact";
+import DashboardSearch from "@/components/dashboard/shared/DashboardSearch";
 
 // Lazy load tab contents for performance
 const OverviewTab = lazy(() => import("@/components/dashboard/owner/OverviewTab"));
@@ -233,9 +233,9 @@ const OwnerDashboard = () => {
               animate={{ x: 0, opacity: 1 }}
               transition={{ delay: 0.4, duration: 0.5 }}
             >
-              <Button variant="outline" onClick={() => setCurrentTab('parrainage')} className="gap-2 bg-background/80 backdrop-blur-sm hover:bg-background">
-                <Gift className="h-4 w-4" />
-                Parrainage
+              <Button variant="outline" onClick={() => setCurrentTab('chiens')} className="gap-2 bg-background/80 backdrop-blur-sm hover:bg-background">
+                <Plus className="h-4 w-4" />
+                Ajouter un chien
               </Button>
               <Button onClick={() => setCurrentTab('promeneurs')} className="gap-2 shadow-lg bg-gradient-to-r from-primary to-primary/90 hover:from-primary/90 hover:to-primary">
                 <Search className="h-4 w-4" />
@@ -281,6 +281,28 @@ const OwnerDashboard = () => {
             </motion.div>
           )}
         </AnimatePresence>
+
+        {/* Search Bar */}
+        <motion.div 
+          initial={{ opacity: 0, y: 10 }} 
+          animate={{ opacity: 1, y: 0 }} 
+          transition={{ delay: 0.5 }}
+          className="mb-6"
+        >
+          <DashboardSearch
+            placeholder="Rechercher une action, un chien, un promeneur..."
+            items={[
+              { id: "add-dog", type: "action", label: "Ajouter un chien", description: "Enregistrer un nouveau compagnon", icon: Dog, action: () => setCurrentTab("chiens"), keywords: ["nouveau", "créer"] },
+              { id: "find-walker", type: "action", label: "Trouver un promeneur", description: "Rechercher près de chez vous", icon: Search, action: () => setCurrentTab("promeneurs"), keywords: ["chercher", "réserver"] },
+              { id: "book", type: "action", label: "Réserver une promenade", description: "Nouvelle réservation", icon: Calendar, action: () => setCurrentTab("promeneurs"), keywords: ["réservation"] },
+              { id: "messages", type: "action", label: "Voir les messages", description: "Conversations avec les promeneurs", icon: MessageCircle, action: () => setCurrentTab("messages"), keywords: ["chat"] },
+              { id: "referral", type: "action", label: "Programme de parrainage", description: "Gagnez 15€ par ami", icon: Gift, action: () => setCurrentTab("parrainage"), keywords: ["code", "invitation"] },
+              { id: "profile", type: "page", label: "Mon profil", icon: User, action: () => setCurrentTab("profil") },
+              { id: "settings", type: "page", label: "Paramètres", icon: Settings, action: () => setCurrentTab("profil") },
+              { id: "bookings", type: "page", label: "Mes réservations", icon: Calendar, action: () => setCurrentTab("reservations") },
+            ]}
+          />
+        </motion.div>
 
         {/* Tabs Navigation */}
         <Tabs value={currentTab} onValueChange={(v) => setCurrentTab(v as TabId)} className="space-y-8">
