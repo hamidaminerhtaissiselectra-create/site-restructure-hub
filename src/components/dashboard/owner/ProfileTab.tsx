@@ -1,19 +1,32 @@
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { useState } from "react";
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Switch } from "@/components/ui/switch";
+import { Textarea } from "@/components/ui/textarea";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { User, Shield, Bell, LogOut } from 'lucide-react';
+import { User, Shield, Bell, LogOut, Camera, MapPin, Settings, FileText } from 'lucide-react';
 import { supabase } from "@/integrations/supabase/client";
 import { useNavigate } from "react-router-dom";
 import { toast } from "@/hooks/use-toast";
 import { motion } from "framer-motion";
+import AdvancedSettings from "@/components/dashboard/shared/AdvancedSettings";
 
-interface ProfileTabProps { profile: any; }
+interface ProfileTabProps { 
+  profile: any; 
+}
 
 const ProfileTab = ({ profile }: ProfileTabProps) => {
   const navigate = useNavigate();
+  const [loading, setLoading] = useState(false);
+  const [profileData, setProfileData] = useState({
+    first_name: profile?.first_name || '',
+    last_name: profile?.last_name || '',
+    phone: profile?.phone || '',
+    city: profile?.city || '',
+    bio: profile?.bio || ''
+  });
   
   const handleLogout = async () => {
     await supabase.auth.signOut();
@@ -21,45 +34,164 @@ const ProfileTab = ({ profile }: ProfileTabProps) => {
     toast({ title: "Déconnexion réussie" });
   };
 
+  const handleSaveProfile = async () => {
+    setLoading(true);
+    try {
+      const { error } = await supabase
+        .from('profiles')
+        .update({
+          first_name: profileData.first_name,
+          last_name: profileData.last_name,
+          phone: profileData.phone,
+          city: profileData.city,
+          bio: profileData.bio,
+          updated_at: new Date().toISOString()
+        })
+        .eq('id', profile?.id);
+
+      if (error) throw error;
+      toast({ title: "Profil mis à jour", description: "Vos informations ont été enregistrées" });
+    } catch (error: any) {
+      toast({ title: "Erreur", description: error.message, variant: "destructive" });
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
     <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
-      <div className="flex items-center justify-between mb-6">
-        <h2 className="text-2xl font-bold flex items-center gap-2"><User className="h-6 w-6 text-primary" />Profil & Paramètres</h2>
-        <Button variant="destructive" onClick={handleLogout} className="gap-2"><LogOut className="h-4 w-4" />Déconnexion</Button>
+      {/* Header */}
+      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-8">
+        <div className="flex items-center gap-4">
+          <div className="relative group">
+            <Avatar className="h-20 w-20 ring-4 ring-background shadow-xl">
+              <AvatarImage src={profile?.avatar_url} />
+              <AvatarFallback className="bg-gradient-to-br from-primary to-primary/70 text-primary-foreground text-2xl font-bold">
+                {profile?.first_name?.charAt(0)}{profile?.last_name?.charAt(0)}
+              </AvatarFallback>
+            </Avatar>
+            <Button 
+              size="icon" 
+              variant="secondary" 
+              className="absolute -bottom-1 -right-1 h-8 w-8 rounded-full shadow-lg opacity-0 group-hover:opacity-100 transition-opacity"
+            >
+              <Camera className="h-4 w-4" />
+            </Button>
+          </div>
+          <div>
+            <h2 className="text-2xl font-bold">{profile?.first_name} {profile?.last_name}</h2>
+            <div className="flex items-center gap-2 text-muted-foreground">
+              <MapPin className="h-4 w-4" />
+              <span>{profile?.city || 'Ville non définie'}</span>
+            </div>
+            <p className="text-sm text-muted-foreground mt-1">{profile?.email}</p>
+          </div>
+        </div>
+        <Button variant="destructive" onClick={handleLogout} className="gap-2">
+          <LogOut className="h-4 w-4" />
+          Déconnexion
+        </Button>
       </div>
-      
-      <Tabs defaultValue="profile">
-        <TabsList className="mb-6"><TabsTrigger value="profile">Profil</TabsTrigger><TabsTrigger value="security">Sécurité</TabsTrigger><TabsTrigger value="notifications">Notifications</TabsTrigger></TabsList>
-        
+
+      <Tabs defaultValue="profile" className="space-y-6">
+        <TabsList className="bg-muted/50 p-1 rounded-xl">
+          <TabsTrigger value="profile" className="gap-2 rounded-lg">
+            <User className="h-4 w-4" />
+            Profil
+          </TabsTrigger>
+          <TabsTrigger value="settings" className="gap-2 rounded-lg">
+            <Settings className="h-4 w-4" />
+            Paramètres
+          </TabsTrigger>
+        </TabsList>
+
         <TabsContent value="profile">
-          <Card>
-            <CardHeader><CardTitle>Informations personnelles</CardTitle></CardHeader>
-            <CardContent className="space-y-4">
-              <div className="grid md:grid-cols-2 gap-4">
-                <div><Label>Prénom</Label><Input defaultValue={profile?.first_name || ''} className="mt-1" /></div>
-                <div><Label>Nom</Label><Input defaultValue={profile?.last_name || ''} className="mt-1" /></div>
-              </div>
-              <div><Label>Email</Label><Input defaultValue={profile?.email || ''} disabled className="mt-1" /></div>
-              <div><Label>Téléphone</Label><Input defaultValue={profile?.phone || ''} className="mt-1" /></div>
-              <div><Label>Ville</Label><Input defaultValue={profile?.city || ''} className="mt-1" /></div>
-              <Button>Enregistrer</Button>
-            </CardContent>
-          </Card>
+          <div className="grid md:grid-cols-2 gap-6">
+            {/* Personal Info */}
+            <Card className="shadow-lg">
+              <CardHeader className="bg-gradient-to-r from-muted/50 to-transparent">
+                <CardTitle className="flex items-center gap-2">
+                  <User className="h-5 w-5 text-primary" />
+                  Informations personnelles
+                </CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-4 pt-6">
+                <div className="grid grid-cols-2 gap-4">
+                  <div className="space-y-2">
+                    <Label>Prénom</Label>
+                    <Input 
+                      value={profileData.first_name} 
+                      onChange={(e) => setProfileData({...profileData, first_name: e.target.value})}
+                    />
+                  </div>
+                  <div className="space-y-2">
+                    <Label>Nom</Label>
+                    <Input 
+                      value={profileData.last_name}
+                      onChange={(e) => setProfileData({...profileData, last_name: e.target.value})}
+                    />
+                  </div>
+                </div>
+                <div className="space-y-2">
+                  <Label>Email</Label>
+                  <Input value={profile?.email || ''} disabled className="bg-muted" />
+                </div>
+                <div className="space-y-2">
+                  <Label>Téléphone</Label>
+                  <Input 
+                    value={profileData.phone}
+                    onChange={(e) => setProfileData({...profileData, phone: e.target.value})}
+                    placeholder="06 12 34 56 78"
+                  />
+                </div>
+                <div className="space-y-2">
+                  <Label>Ville</Label>
+                  <Input 
+                    value={profileData.city}
+                    onChange={(e) => setProfileData({...profileData, city: e.target.value})}
+                    placeholder="Paris, Lyon, Marseille..."
+                  />
+                </div>
+                <Button onClick={handleSaveProfile} disabled={loading} className="w-full">
+                  {loading ? "Enregistrement..." : "Enregistrer les modifications"}
+                </Button>
+              </CardContent>
+            </Card>
+
+            {/* Bio & About */}
+            <Card className="shadow-lg">
+              <CardHeader className="bg-gradient-to-r from-muted/50 to-transparent">
+                <CardTitle className="flex items-center gap-2">
+                  <FileText className="h-5 w-5 text-primary" />
+                  À propos de vous
+                </CardTitle>
+                <CardDescription>Cette information aide les promeneurs à vous connaître</CardDescription>
+              </CardHeader>
+              <CardContent className="pt-6">
+                <div className="space-y-4">
+                  <Textarea 
+                    value={profileData.bio}
+                    onChange={(e) => setProfileData({...profileData, bio: e.target.value})}
+                    rows={6}
+                    placeholder="Parlez-nous de vous et de votre chien...
+
+Par exemple:
+- Votre expérience avec les chiens
+- Les besoins particuliers de votre animal
+- Vos attentes vis-à-vis des promeneurs"
+                    className="resize-none"
+                  />
+                  <p className="text-sm text-muted-foreground">
+                    {profileData.bio.length}/500 caractères
+                  </p>
+                </div>
+              </CardContent>
+            </Card>
+          </div>
         </TabsContent>
-        
-        <TabsContent value="security">
-          <Card><CardContent className="py-8 space-y-4">
-            <div className="flex items-center justify-between"><div><p className="font-medium">Mot de passe</p><p className="text-sm text-muted-foreground">Dernière modification il y a 30 jours</p></div><Button variant="outline">Modifier</Button></div>
-            <div className="flex items-center justify-between"><div><p className="font-medium">Authentification 2FA</p><p className="text-sm text-muted-foreground">Sécurisez votre compte</p></div><Switch /></div>
-          </CardContent></Card>
-        </TabsContent>
-        
-        <TabsContent value="notifications">
-          <Card><CardContent className="py-8 space-y-4">
-            <div className="flex items-center justify-between"><p>Notifications push</p><Switch defaultChecked /></div>
-            <div className="flex items-center justify-between"><p>Emails marketing</p><Switch /></div>
-            <div className="flex items-center justify-between"><p>Rappels de réservation</p><Switch defaultChecked /></div>
-          </CardContent></Card>
+
+        <TabsContent value="settings">
+          <AdvancedSettings userType="owner" />
         </TabsContent>
       </Tabs>
     </motion.div>
