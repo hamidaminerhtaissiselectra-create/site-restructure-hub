@@ -6,7 +6,6 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { 
   User, Shield, Bell, FileText, LogOut, Euro, Camera, MapPin, Star, Award
 } from 'lucide-react';
@@ -17,6 +16,7 @@ import { motion } from "framer-motion";
 import PricingSettings from "@/components/dashboard/shared/PricingSettings";
 import AdvancedSettings from "@/components/dashboard/shared/AdvancedSettings";
 import DocumentUpload from "@/components/dashboard/shared/DocumentUpload";
+import AvatarUpload from "@/components/dashboard/shared/AvatarUpload";
 
 interface ProfileTabProps { 
   profile: any; 
@@ -69,21 +69,16 @@ const WalkerProfileTab = ({ profile, walkerProfile }: ProfileTabProps) => {
       {/* Header */}
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-8">
         <div className="flex items-center gap-4">
-          <div className="relative group">
-            <Avatar className="h-20 w-20 ring-4 ring-background shadow-xl">
-              <AvatarImage src={profile?.avatar_url} />
-              <AvatarFallback className="bg-gradient-to-br from-green-500 to-emerald-600 text-white text-2xl font-bold">
-                {profile?.first_name?.charAt(0)}{profile?.last_name?.charAt(0)}
-              </AvatarFallback>
-            </Avatar>
-            <Button 
-              size="icon" 
-              variant="secondary" 
-              className="absolute -bottom-1 -right-1 h-8 w-8 rounded-full shadow-lg opacity-0 group-hover:opacity-100 transition-opacity"
-            >
-              <Camera className="h-4 w-4" />
-            </Button>
-          </div>
+          <AvatarUpload
+            currentUrl={profile?.avatar_url}
+            userId={profile?.id}
+            userName={`${profile?.first_name || ''} ${profile?.last_name || ''}`}
+            size="xl"
+            variant="walker"
+            onUploadComplete={() => {
+              toast({ title: "Photo mise à jour" });
+            }}
+          />
           <div>
             <h2 className="text-2xl font-bold">{profile?.first_name} {profile?.last_name}</h2>
             <div className="flex items-center gap-2 text-muted-foreground">

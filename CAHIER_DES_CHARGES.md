@@ -1,5 +1,5 @@
-# 📘 CAHIER DES CHARGES SEO FINAL - DOGWALKING v3.0
-## Accueil + 6 Services Piliers (Compatible Google 2026)
+# 📘 CAHIER DES CHARGES COMPLET - DOGWALKING v4.0
+## Plateforme Leader de Pet Care en France - Objectif : Surpasser Rover.com
 
 ---
 
@@ -8,228 +8,351 @@
 | Élément | Valeur |
 |---------|--------|
 | **Nom du projet** | DogWalking |
-| **Type** | Plateforme de mise en relation B2C |
-| **Cibles** | Propriétaires de chiens + Promeneurs professionnels |
-| **Marché** | France métropolitaine |
+| **Type** | Plateforme marketplace B2C Pet Care |
+| **Cibles** | Propriétaires d'animaux + Prestataires professionnels |
+| **Marché** | France métropolitaine (extension Belgique/Suisse prévue) |
 | **Stack technique** | React 18 + TypeScript + Vite + Tailwind CSS + Supabase + Framer Motion |
 | **Date création** | Décembre 2024 |
-| **Date mise à jour** | 27 Décembre 2024 |
-| **Progression globale** | ~92% |
+| **Date mise à jour** | Janvier 2025 |
+| **Progression globale** | ~75% |
 
 ---
 
-## 🎯 RÈGLES GÉNÉRALES SEO (APPLIQUÉES PARTOUT)
+## 🎯 VISION STRATÉGIQUE : SURPASSER ROVER.COM
 
-| Règle | Status |
-|-------|--------|
-| ✅ Garder 100% du contenu existant | Appliqué |
-| ✅ Ne supprimer aucune page | Appliqué |
-| ✅ Enrichir uniquement | Appliqué |
-| ✅ 1 page = 1 intention SEO | Appliqué |
-| ✅ AUCUN doublon texte / image / FAQ | Appliqué |
-| ✅ Images obligatoires pour casser les blocs | Appliqué |
-| ✅ FAQ en accordéon | Appliqué |
-| ✅ SEO orienté utilisateur + Google 2026 | Appliqué |
+### Analyse SWOT Rover.com
 
----
+| Forces Rover | Faiblesses Rover | Opportunités DogWalking |
+|--------------|------------------|------------------------|
+| Leader mondial | Commission élevée (20%) | Commission 13% |
+| App mobile mature | Vérification basique | Vérification française stricte |
+| Grande base users | Support limité | Support chat 7j/7 |
+| - | Preuves optionnelles | Preuves obligatoires |
+| - | SEO local faible | SEO 100+ villes |
 
-## 📏 STANDARDS OBLIGATOIRES - NOMBRE DE MOTS
+### Différenciateurs Clés DogWalking
 
-| Page | Cible | Status | Actuel |
-|------|-------|--------|--------|
-| **Accueil** | 1300 – 1600 | ✅ | ~1400 mots |
-| **Service Promenade** | 1400 – 1700 | ✅ | ~1550 mots |
-| **Service Visite** | 1400 – 1700 | ✅ | ~1500 mots |
-| **Service Garde** | 1400 – 1700 | ✅ | ~1450 mots |
-| **Service Dog Sitting** | 1400 – 1700 | ✅ | ~1600 mots |
-| **Service Pet Sitting** | 1400 – 1700 | ✅ | ~1550 mots |
-| **Service Marche Régulière** | 1400 – 1700 | ✅ | ~1580 mots |
+1. **🇫🇷 Vérification Française** - Casier judiciaire B3, CNI, assurance RC Pro
+2. **💰 Commission Compétitive** - 13% vs 20% (économie significative)
+3. **📸 Preuves Obligatoires** - Photos/vidéos à chaque prestation
+4. **🔒 Escrow Sécurisé** - Argent bloqué 48h après service
+5. **🎁 Parrainage Généreux** - 15€ parrain + 10€ filleul
+6. **🌍 SEO Local Fort** - Pages dédiées 100+ villes françaises
+7. **⚡ UX Premium** - Animations Framer Motion, design moderne
 
 ---
 
-## 🖼️ RÈGLES IMAGES (TRÈS IMPORTANT)
+## 📊 ÉTAT D'AVANCEMENT DÉTAILLÉ
 
-| Règle | Status |
-|-------|--------|
-| 4 à 6 images minimum par page | ✅ |
-| 1 image maximum tous les 2 blocs texte | ✅ |
-| Aucune image réutilisée ailleurs | ✅ Vérifié |
-| ALT unique | ✅ |
-| Nom de fichier unique | ✅ |
-| Images cohérentes avec le service | ✅ |
+### ✅ PHASE 1 : FONDATIONS (100% COMPLET)
 
-### Images générées uniques (18 nouvelles)
-- `dog-sitting-hero.jpg`, `dog-sitting-confort.jpg`, `dog-sitting-jeu-jardin.jpg`, `dog-sitting-confiance.jpg`
-- `pet-sitting-hero.jpg`, `pet-sitting-multi-animaux.jpg`, `pet-sitting-organisation.jpg`, `pet-sitting-serenite.jpg`, `pet-sitting-petits-animaux.jpg`
-- `marche-reguliere-hero.jpg`, `marche-reguliere-quotidienne.jpg`, `marche-reguliere-chien-equilibre.jpg`, `marche-reguliere-planning.jpg`, `marche-reguliere-lien.jpg`
-- `promenade-nature-automne.jpg`, `visite-chien-senior.jpg`, `garde-preparation-repas.jpg`, `garde-communication-suivi.jpg`
+#### 1.1 Authentification & Profils
+| Fonctionnalité | Status | Détails |
+|---------------|--------|---------|
+| Auth email Supabase | ✅ | Login, register, reset password |
+| Profils utilisateurs | ✅ | Table `profiles` avec RLS |
+| Types utilisateurs | ✅ | Enum: owner, walker, both |
+| Rôles sécurisés | ✅ | Table `user_roles` séparée |
 
----
+#### 1.2 Dashboards Unifiés
+| Dashboard | Onglets | Status |
+|-----------|---------|--------|
+| **Propriétaire** | Aperçu, Chiens, Réservations, Promeneurs, Messages, Parrainage, Profil | ✅ 7/7 |
+| **Promeneur** | Aperçu, Missions, Gains, Disponibilités, Messages, Performance, Profil | ✅ 7/7 |
 
-## 🏠 PAGE D'ACCUEIL — PILIER SEO GLOBAL
+#### 1.3 Gestion Fichiers (Supabase Storage)
+| Bucket | Public | Fonctionnalité | Status |
+|--------|--------|----------------|--------|
+| `avatars` | ✅ | Photos profil humains | ✅ Upload fonctionnel |
+| `dog-photos` | ✅ | Photos des chiens | ✅ Upload fonctionnel |
+| `walker-documents` | ❌ | CNI, casier, assurance | ✅ Upload fonctionnel |
+| `walk-proofs` | ❌ | Preuves promenades | ⚪ À implémenter |
 
-| Bloc | Status | Description |
-|------|--------|-------------|
-| HeroSection | ✅ | Titre principal + CTA |
-| SearchForm | ✅ | Recherche promeneurs |
-| HomeIntroSection | ✅ | Mission & vision + 4 features |
-| WhySection | ✅ | Pourquoi nous choisir |
-| HowItWorksSection | ✅ | 3 étapes |
-| ServicesSection | ✅ | 7 services résumés |
-| FeaturesSection | ✅ | Fonctionnalités clés |
-| DogWalkingProtect | ✅ | Protection escrow |
-| SecurityTrustSection | ✅ | Sécurité |
-| TrustSection | ✅ | Confiance |
-| TestimonialsSection | ✅ | Témoignages |
-| UserTypesSection | ✅ | Types utilisateurs |
-| LocalPresenceSection | ✅ | Présence locale |
-| HomeFAQSection | ✅ | FAQ unique (6 questions) |
+#### 1.4 Composants Partagés Premium
+| Composant | Fichier | Fonctionnalités |
+|-----------|---------|-----------------|
+| Recherche | `DashboardSearch.tsx` | Raccourci ⌘K, actions rapides, navigation |
+| Avatar Upload | `AvatarUpload.tsx` | Upload, preview, suppression, variants |
+| Dog Photo | `DogPhotoUpload.tsx` | Upload photo chien avec dialog |
+| Documents | `DocumentUpload.tsx` | Upload multi-docs, progress, statuts |
+| Tarifs | `PricingSettings.tsx` | Slider, zone, chiens max, dynamique |
+| Paramètres | `AdvancedSettings.tsx` | Thème, notifs, confidentialité, sécurité |
 
----
-
-## 🐕 6 SERVICES PILIERS SEO
-
-### SERVICE 1 — PROMENADE (✅ COMPLET)
-| Section | Status |
-|---------|--------|
-| Hero + H1 | ✅ |
-| Pourquoi la promenade | ✅ |
-| Déroulement promenade | ✅ |
-| Types de promenades | ✅ |
-| Pour quels chiens | ✅ |
-| Sécurité & encadrement | ✅ |
-| FAQ Promenade (6 questions) | ✅ |
-| Images uniques (5) | ✅ |
-
-### SERVICE 2 — VISITE À DOMICILE (✅ COMPLET)
-| Section | Status |
-|---------|--------|
-| Hero + H1 | ✅ |
-| Ce qui est inclus | ✅ |
-| Formules de visite | ✅ |
-| Idéal pour... | ✅ |
-| Sécurité & confiance | ✅ |
-| FAQ Visite (6 questions) | ✅ |
-| Images uniques (4) | ✅ |
-
-### SERVICE 3 — GARDE DE CHIENS (✅ COMPLET)
-| Section | Status |
-|---------|--------|
-| Hero + H1 | ✅ |
-| Types de garde | ✅ |
-| Comparaison pension | ✅ |
-| Garanties | ✅ |
-| Bien-être & sécurité | ✅ |
-| FAQ Garde (6 questions) | ✅ |
-| Images uniques (5) | ✅ |
-
-### SERVICE 4 — DOG SITTING (✅ COMPLET)
-| Section | Status |
-|---------|--------|
-| Hero + H1 | ✅ |
-| Qu'est-ce que le dog sitting | ✅ |
-| Différence garde classique | ✅ |
-| Pour quels profils | ✅ |
-| Encadrement & sélection | ✅ |
-| Suivi & communication | ✅ |
-| Formules tarifs | ✅ |
-| FAQ Dog Sitting (8 questions) | ✅ |
-| Images uniques (5) | ✅ |
-
-### SERVICE 5 — PET SITTING MULTI-ANIMAUX (✅ COMPLET)
-| Section | Status |
-|---------|--------|
-| Hero + H1 | ✅ |
-| Animaux pris en charge | ✅ |
-| Organisation visites | ✅ |
-| Avantages propriétaire | ✅ |
-| Petits animaux & NAC | ✅ |
-| Formules tarifs | ✅ |
-| FAQ Pet Sitting (8 questions) | ✅ |
-| Images uniques (5) | ✅ |
-
-### SERVICE 6 — MARCHE RÉGULIÈRE (✅ COMPLET)
-| Section | Status |
-|---------|--------|
-| Hero + H1 | ✅ |
-| Promenades régulières expliquées | ✅ |
-| Bénéfices comportementaux | ✅ |
-| Organisation hebdomadaire | ✅ |
-| Relation promeneur/chien | ✅ |
-| Forfaits tarifs | ✅ |
-| FAQ Marche Régulière (8 questions) | ✅ |
-| Images uniques (5) | ✅ |
+#### 1.5 SEO Complet
+| Page | Mots | FAQ | Status |
+|------|------|-----|--------|
+| Accueil | ~1400 | 6 | ✅ |
+| Promenade | ~1550 | 6 | ✅ |
+| Garde | ~1450 | 6 | ✅ |
+| Visite | ~1500 | 6 | ✅ |
+| Dog Sitting | ~1600 | 8 | ✅ |
+| Pet Sitting | ~1550 | 8 | ✅ |
+| Marche Régulière | ~1580 | 8 | ✅ |
 
 ---
 
-## ⚙️ SEO TECHNIQUE
+### 🔜 PHASE 2 : PAIEMENT & MONÉTISATION (0% - PRIORITÉ HAUTE)
 
-| Élément | Status |
-|---------|--------|
-| Title unique par page | ✅ |
-| Meta description unique | ✅ |
-| 1 seul H1 par page | ✅ |
-| Sitemap.xml à jour | ✅ Mis à jour |
-| Canonical URLs | ✅ |
-| Open Graph meta | ✅ |
-| Twitter Cards | ✅ |
-| Données structurées FAQPage | ✅ |
-| Données structurées LocalBusiness | ✅ |
-| Données structurées Service | ✅ |
+#### 2.1 Intégration Stripe Connect
+| Tâche | Priorité | Complexité | Status |
+|-------|----------|------------|--------|
+| Créer compte Stripe Connect | 🔴 Haute | Faible | ⚪ |
+| Edge function `create-checkout` | 🔴 Haute | Moyenne | ⚪ |
+| Edge function `stripe-webhook` | 🔴 Haute | Haute | ⚪ |
+| Table `payments` | 🔴 Haute | Faible | ⚪ |
+| Table `payouts` (virements promeneurs) | 🔴 Haute | Faible | ⚪ |
+| Interface paiement frontend | 🔴 Haute | Moyenne | ⚪ |
 
----
+#### 2.2 Système Escrow
+| Fonctionnalité | Description | Status |
+|---------------|-------------|--------|
+| Capture différée | Argent bloqué à la réservation | ⚪ |
+| Libération auto | Après 48h post-service | ⚪ |
+| Libération manuelle | Validation propriétaire | ⚪ |
+| Politique annulation | 24h, 48h, 7j avec pénalités | ⚪ |
 
-## 🟠 À FAIRE — PRIORITÉ RESTANTE (8%)
-
-### 🔴 PRIORITÉ HAUTE
-| Tâche | Status |
-|-------|--------|
-| Intégration Stripe (paiement escrow) | ⚪ Non commencé |
-| Edge function `create-checkout` | ⚪ Non commencé |
-| Edge function `stripe-webhook` | ⚪ Non commencé |
-| Emails transactionnels (Resend) | ⚪ Non commencé |
-
-### 🟠 PRIORITÉ MOYENNE
-| Tâche | Status |
-|-------|--------|
-| Enrichir page Accueil bloc Zone SEO | ✅ LocalPresenceSection existe |
-| Ajouter FloatingContact à ProcheDeVous | ⚪ Optionnel |
-| Lazy loading images | ⚪ Optionnel |
-
-### 🟢 PRIORITÉ BASSE
-| Tâche | Status |
-|-------|--------|
-| Optimiser images WebP | ⚪ Optionnel |
-| Tests end-to-end Cypress | ⚪ Optionnel |
+#### 2.3 Facturation
+| Fonctionnalité | Status |
+|---------------|--------|
+| Génération factures PDF | ⚪ |
+| Historique transactions | ⚪ |
+| Export comptable | ⚪ |
 
 ---
 
-## 📈 MÉTRIQUES SEO ATTEINTES
+### 🔜 PHASE 3 : COMMUNICATION (10% - PRIORITÉ HAUTE)
 
-| Métrique | Cible | Actuel |
-|----------|-------|--------|
-| Pages avec SEOHead | 100% | ✅ 100% |
-| Pages avec H1 unique | 100% | ✅ 100% |
-| Images avec alt unique | 100% | ✅ 100% |
-| Animations Framer Motion | Pages clés | ✅ |
-| FloatingContact | Pages publiques | ✅ 95% |
-| Contenu piliers 1400+ mots | 6 services | ✅ 100% |
-| FAQ uniques par page | 6 services | ✅ 100% |
+#### 3.1 Emails Transactionnels (Resend)
+| Email | Trigger | Status |
+|-------|---------|--------|
+| Bienvenue | Inscription | ⚪ |
+| Confirmation réservation | Nouvelle résa | ⚪ |
+| Rappel J-1 | 24h avant | ⚪ |
+| Promenade terminée | Fin service | ⚪ |
+| Demande d'avis | 2h après service | ⚪ |
+| Documents validés | Vérification OK | ⚪ |
+| Documents refusés | Vérification KO | ⚪ |
+
+#### 3.2 Notifications Push (PWA)
+| Type | Status |
+|------|--------|
+| Service Worker | ⚪ |
+| Subscription push | ⚪ |
+| Nouvelle demande promeneur | ⚪ |
+| Message reçu | ⚪ |
+| Réservation confirmée | ⚪ |
+
+#### 3.3 SMS (Twilio - Optionnel)
+| Type | Status |
+|------|--------|
+| Confirmation téléphone | ⚪ |
+| Alertes urgentes | ⚪ |
 
 ---
 
-## ✅ CONCLUSION EXPERTE
+### ⚪ PHASE 4 : FONCTIONNALITÉS AVANCÉES (0%)
 
-| Critère | Status |
-|---------|--------|
-| ✔️ Stratégie SEO long terme | Appliquée |
-| ✔️ Compatible Google 2026 | Oui |
-| ✔️ Aucun risque de sur-optimisation | Vérifié |
-| ✔️ Autorité réelle, pas artificielle | Oui |
-| ✔️ Aucun doublon image/texte/FAQ | Vérifié |
-| ✔️ 6 piliers SEO services complets | ✅ |
-| ✔️ Page accueil optimisée | ✅ |
+#### 4.1 Suivi GPS Temps Réel
+| Fonctionnalité | Complexité | Status |
+|---------------|------------|--------|
+| Tracking position promeneur | Haute | ⚪ |
+| Carte live propriétaire | Haute | ⚪ |
+| Historique parcours | Moyenne | ⚪ |
+| Géofencing (zones) | Haute | ⚪ |
+
+#### 4.2 Calendrier & Récurrence
+| Fonctionnalité | Status |
+|---------------|--------|
+| Sync Google Calendar | ⚪ |
+| Export iCal | ⚪ |
+| Réservations récurrentes | ⚪ |
+| Abonnements mensuel/hebdo | ⚪ |
+
+#### 4.3 Multi-Chiens & Famille
+| Fonctionnalité | Status |
+|---------------|--------|
+| Forfaits multi-chiens | ⚪ |
+| Comptes famille partagés | ⚪ |
+| Promenades groupées | ⚪ |
+
+#### 4.4 Urgences & Sécurité
+| Fonctionnalité | Status |
+|---------------|--------|
+| Bouton SOS promeneur | ⚪ |
+| Alertes vétérinaire | ⚪ |
+| Contact urgence automatique | ⚪ |
 
 ---
 
-*Document mis à jour le 27 Décembre 2024 - Version 3.0*
+### ⚪ PHASE 5 : MOBILE & SCALE (0%)
+
+#### 5.1 PWA Optimisée
+| Fonctionnalité | Status |
+|---------------|--------|
+| Manifest.json complet | ⚪ |
+| Service worker cache | ⚪ |
+| Mode offline | ⚪ |
+| Install prompt | ⚪ |
+
+#### 5.2 Application Native
+| Option | Technologie | Status |
+|--------|-------------|--------|
+| React Native | Expo | ⚪ Évaluation |
+| Flutter | Dart | ⚪ Évaluation |
+
+#### 5.3 API Partenaires
+| Partenaire | Integration | Status |
+|-----------|-------------|--------|
+| Vétérinaires | API rendez-vous | ⚪ |
+| Assurances | Déclaration sinistre | ⚪ |
+| Pet shops | Bon d'achat | ⚪ |
+
+---
+
+### ⚪ PHASE 6 : ADMINISTRATION (0% - SÉPARÉ POUR SÉCURITÉ)
+
+#### 6.1 Interface Admin Sécurisée
+| Fonctionnalité | Sécurité | Status |
+|---------------|----------|--------|
+| Route `/admin` protégée | RLS + role admin | ⚪ |
+| Authentification 2FA | Obligatoire | ⚪ |
+| Logs d'actions | Audit trail | ⚪ |
+
+#### 6.2 Gestion Utilisateurs
+| Fonctionnalité | Status |
+|---------------|--------|
+| Liste users paginée | ⚪ |
+| Suspension compte | ⚪ |
+| Modification profil | ⚪ |
+| Historique activité | ⚪ |
+
+#### 6.3 Modération Documents
+| Fonctionnalité | Status |
+|---------------|--------|
+| File d'attente vérification | ⚪ |
+| Preview documents | ⚪ |
+| Validation/Rejet avec motif | ⚪ |
+| Notifications auto | ⚪ |
+
+#### 6.4 Analytics Business
+| KPI | Status |
+|-----|--------|
+| Utilisateurs actifs | ⚪ |
+| Volume réservations | ⚪ |
+| Chiffre d'affaires | ⚪ |
+| Taux conversion | ⚪ |
+| NPS score | ⚪ |
+
+#### 6.5 Gestion Litiges
+| Fonctionnalité | Status |
+|---------------|--------|
+| Tickets support | ⚪ |
+| Médiation automatisée | ⚪ |
+| Remboursements | ⚪ |
+| Bannissement | ⚪ |
+
+---
+
+## 📈 MÉTRIQUES OBJECTIFS
+
+### KPIs Business (Année 1)
+| Métrique | Objectif |
+|----------|----------|
+| Inscriptions promeneurs | 1 000 |
+| Inscriptions propriétaires | 10 000 |
+| Réservations/mois | 5 000 |
+| CA mensuel | 50 000€ |
+| Commission nette | 6 500€ |
+| NPS | > 50 |
+
+### KPIs Techniques
+| Métrique | Objectif | Actuel |
+|----------|----------|--------|
+| Lighthouse Performance | > 90 | À mesurer |
+| Lighthouse SEO | > 95 | ✅ 95+ |
+| Uptime | 99.9% | ✅ (Supabase) |
+| Temps réponse API | < 200ms | ✅ |
+
+---
+
+## 🔐 ARCHITECTURE SÉCURITÉ
+
+### Séparation des Interfaces
+| Interface | Route | Accès | Status |
+|-----------|-------|-------|--------|
+| Site public | `/` | Tous | ✅ |
+| Dashboard Propriétaire | `/dashboard` | Auth + owner/both | ✅ |
+| Dashboard Promeneur | `/walker/dashboard` | Auth + walker/both | ✅ |
+| **Admin** | `/admin` | Auth + role admin + 2FA | ⚪ À créer |
+
+### Politique RLS Supabase
+| Table | SELECT | INSERT | UPDATE | DELETE |
+|-------|--------|--------|--------|--------|
+| profiles | Public | Own | Own | ❌ |
+| dogs | Public | Own | Own | Own |
+| bookings | Participants | Owner | Participants | ❌ |
+| walker_documents | Own + Admin | Own | Own | Admin |
+| walker_earnings | Own | Admin | ❌ | ❌ |
+| user_roles | Own + Admin | Admin | Admin | Admin |
+
+---
+
+## ✅ CHECKLIST AVANT LANCEMENT
+
+### Technique
+- [ ] Tests E2E Cypress
+- [ ] Tests unitaires composants critiques
+- [ ] Audit sécurité Supabase
+- [ ] Optimisation images WebP
+- [ ] Lazy loading complet
+- [ ] Error boundaries
+
+### Légal
+- [ ] CGV/CGU finalisées
+- [ ] Politique de confidentialité RGPD
+- [ ] Mentions légales complètes
+- [ ] Contrat promeneur
+- [ ] Assurance plateforme
+
+### Business
+- [ ] Compte Stripe Connect vérifié
+- [ ] Compte Resend configuré
+- [ ] Support email actif
+- [ ] FAQ complète
+- [ ] Guide promeneur
+- [ ] Guide propriétaire
+
+---
+
+## 📅 PLANNING PRÉVISIONNEL
+
+| Phase | Durée | Dates |
+|-------|-------|-------|
+| Phase 2 (Paiement) | 3 semaines | Janvier 2025 |
+| Phase 3 (Communication) | 2 semaines | Février 2025 |
+| Phase 4 (Avancées) | 4 semaines | Mars 2025 |
+| Phase 5 (Mobile) | 6 semaines | Avril-Mai 2025 |
+| Phase 6 (Admin) | 3 semaines | Juin 2025 |
+| **Lancement Beta** | - | **Juillet 2025** |
+
+---
+
+## ✅ CONCLUSION
+
+DogWalking est en bonne voie pour devenir le leader français du pet care. Les fondations sont solides :
+
+- ✅ **Architecture moderne** et scalable
+- ✅ **UX premium** avec animations fluides
+- ✅ **SEO optimisé** pour dominer Google
+- ✅ **Sécurité renforcée** vs concurrence
+- ✅ **Commission attractive** (13% vs 20%)
+
+**Priorités immédiates :**
+1. 🔴 Intégration Stripe Connect
+2. 🔴 Emails transactionnels Resend
+3. 🔴 Interface Admin sécurisée
+
+---
+
+*Document mis à jour le 16 Janvier 2025 - Version 4.0*
+*Objectif : Leader français Pet Care 🇫🇷 🐕*
