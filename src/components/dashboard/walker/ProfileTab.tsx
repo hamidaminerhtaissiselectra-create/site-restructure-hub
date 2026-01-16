@@ -4,13 +4,11 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
-import { Switch } from "@/components/ui/switch";
 import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { 
-  User, Shield, Bell, FileText, Upload, CheckCircle, Clock, 
-  AlertCircle, LogOut, Euro, Camera, MapPin, Star, Award
+  User, Shield, Bell, FileText, LogOut, Euro, Camera, MapPin, Star, Award
 } from 'lucide-react';
 import { supabase } from "@/integrations/supabase/client";
 import { useNavigate } from "react-router-dom";
@@ -18,18 +16,12 @@ import { toast } from "@/hooks/use-toast";
 import { motion } from "framer-motion";
 import PricingSettings from "@/components/dashboard/shared/PricingSettings";
 import AdvancedSettings from "@/components/dashboard/shared/AdvancedSettings";
+import DocumentUpload from "@/components/dashboard/shared/DocumentUpload";
 
 interface ProfileTabProps { 
   profile: any; 
   walkerProfile: any; 
 }
-
-const DOCUMENTS = [
-  { type: 'id_card', label: "Carte d'identité", required: true, icon: FileText },
-  { type: 'criminal_record', label: 'Casier judiciaire (B3)', required: true, icon: Shield },
-  { type: 'insurance', label: 'Assurance RC Pro', required: true, icon: Award },
-  { type: 'photo', label: 'Photo de profil professionnelle', required: false, icon: Camera },
-];
 
 const WalkerProfileTab = ({ profile, walkerProfile }: ProfileTabProps) => {
   const navigate = useNavigate();
@@ -70,11 +62,6 @@ const WalkerProfileTab = ({ profile, walkerProfile }: ProfileTabProps) => {
     } finally {
       setLoading(false);
     }
-  };
-
-  const getDocumentStatus = (docType: string) => {
-    // Placeholder - would fetch from walker_documents table
-    return { status: 'pending', label: 'Non soumis' };
   };
 
   return (
@@ -229,67 +216,12 @@ Par exemple:
         </TabsContent>
 
         <TabsContent value="documents">
-          <Card className="shadow-lg">
-            <CardHeader className="bg-gradient-to-r from-muted/50 to-transparent">
-              <CardTitle className="flex items-center gap-2">
-                <FileText className="h-5 w-5 text-primary" />
-                Documents de vérification
-              </CardTitle>
-              <CardDescription>
-                Soumettez vos documents pour obtenir le badge vérifié et recevoir plus de demandes
-              </CardDescription>
-            </CardHeader>
-            <CardContent className="space-y-4 pt-6">
-              {DOCUMENTS.map(doc => {
-                const status = getDocumentStatus(doc.type);
-                return (
-                  <div 
-                    key={doc.type} 
-                    className="flex items-center justify-between p-5 rounded-2xl border-2 border-dashed hover:border-primary/50 hover:bg-primary/5 transition-all"
-                  >
-                    <div className="flex items-center gap-4">
-                      <div className="w-12 h-12 rounded-xl bg-muted flex items-center justify-center">
-                        <doc.icon className="h-6 w-6 text-muted-foreground" />
-                      </div>
-                      <div>
-                        <p className="font-semibold text-lg">{doc.label}</p>
-                        <div className="flex items-center gap-2 mt-1">
-                          {doc.required && (
-                            <Badge variant="outline" className="text-xs text-destructive border-destructive/50">
-                              Requis
-                            </Badge>
-                          )}
-                        </div>
-                      </div>
-                    </div>
-                    <div className="flex items-center gap-3">
-                      <Badge variant="secondary" className="gap-1">
-                        <AlertCircle className="h-3 w-3" />
-                        {status.label}
-                      </Badge>
-                      <Button variant="outline" className="gap-2">
-                        <Upload className="h-4 w-4" />
-                        Téléverser
-                      </Button>
-                    </div>
-                  </div>
-                );
-              })}
-              
-              <div className="mt-6 p-4 rounded-xl bg-amber-50 dark:bg-amber-950/30 border border-amber-200 dark:border-amber-900">
-                <div className="flex items-start gap-3">
-                  <AlertCircle className="h-5 w-5 text-amber-600 shrink-0 mt-0.5" />
-                  <div>
-                    <p className="font-medium text-amber-800 dark:text-amber-200">Processus de vérification</p>
-                    <p className="text-sm text-amber-700 dark:text-amber-300 mt-1">
-                      Une fois vos documents soumis, notre équipe les vérifiera sous 24-48h. 
-                      Vous recevrez une notification une fois la vérification terminée.
-                    </p>
-                  </div>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
+          <DocumentUpload 
+            walkerId={profile?.id} 
+            onDocumentUploaded={() => {
+              toast({ title: "Document mis à jour" });
+            }} 
+          />
         </TabsContent>
 
         <TabsContent value="settings">
