@@ -2,31 +2,25 @@ import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
+import { BrowserRouter, Routes, Route, useLocation, Navigate } from "react-router-dom";
 import { HelmetProvider } from "react-helmet-async";
 import { useEffect } from "react";
 import Index from "./pages/Index";
 import ServicePage from "./pages/ServicePage";
 import Auth from "./pages/Auth";
-import Dashboard from "./pages/Dashboard";
-import AddDog from "./pages/AddDog";
-import FindWalkers from "./pages/FindWalkers";
-import MyBookings from "./pages/MyBookings";
+// New unified dashboards
+import OwnerDashboard from "./pages/dashboard/OwnerDashboard";
+import WalkerDashboardPage from "./pages/dashboard/WalkerDashboard";
+// Keep some standalone pages
 import BookingDetails from "./pages/BookingDetails";
 import BookWalk from "./pages/BookWalk";
 import WalkerRegister from "./pages/WalkerRegister";
-import WalkerDashboard from "./pages/WalkerDashboard";
-import WalkerEarnings from "./pages/WalkerEarnings";
-import Profile from "./pages/Profile";
 import Tarifs from "./pages/Tarifs";
-
 import Messages from "./pages/Messages";
 import Blog from "./pages/Blog";
 import AdminDashboard from "./pages/AdminDashboard";
-import Referral from "./pages/Referral";
 import NotFound from "./pages/NotFound";
 import LocalZone from "./pages/LocalZone";
-
 import MentionsLegales from "./pages/MentionsLegales";
 import CGU from "./pages/CGU";
 import Confidentialite from "./pages/Confidentialite";
@@ -43,6 +37,8 @@ import ServicePetSitting from "./pages/services/ServicePetSitting";
 import ServiceMarcheReguliere from "./pages/services/ServiceMarcheReguliere";
 import BlogArticle from "./pages/BlogArticle";
 import Aide from "./pages/Aide";
+import FindWalkers from "./pages/FindWalkers";
+
 const queryClient = new QueryClient();
 
 // ScrollToTop component that scrolls to top on route change
@@ -75,25 +71,28 @@ const App = () => (
             <Route path="/services/pet-sitting" element={<ServicePetSitting />} />
             <Route path="/services/marche-reguliere" element={<ServiceMarcheReguliere />} />
             <Route path="/auth" element={<Auth />} />
-            <Route path="/dashboard" element={<Dashboard />} />
-            <Route path="/dogs/add" element={<AddDog />} />
+            {/* Owner Dashboard - Unified with 7 tabs */}
+            <Route path="/dashboard" element={<OwnerDashboard />} />
+            {/* Redirects from old pages to dashboard tabs */}
+            <Route path="/dogs/add" element={<Navigate to="/dashboard?tab=chiens" replace />} />
+            <Route path="/bookings" element={<Navigate to="/dashboard?tab=reservations" replace />} />
+            <Route path="/referral" element={<Navigate to="/dashboard?tab=parrainage" replace />} />
+            <Route path="/profile" element={<Navigate to="/dashboard?tab=profil" replace />} />
+            {/* Walker Dashboard - Unified with 7 tabs */}
+            <Route path="/walker/dashboard" element={<WalkerDashboardPage />} />
+            <Route path="/walker/earnings" element={<Navigate to="/walker/dashboard?tab=gains" replace />} />
+            {/* Standalone pages */}
             <Route path="/walkers" element={<FindWalkers />} />
             <Route path="/find-walkers" element={<FindWalkers />} />
             <Route path="/walker/:walkerId" element={<WalkerProfile />} />
-            <Route path="/bookings" element={<MyBookings />} />
             <Route path="/bookings/:id" element={<BookingDetails />} />
             <Route path="/book/:walkerId" element={<BookWalk />} />
             <Route path="/walker/register" element={<WalkerRegister />} />
-            <Route path="/walker/dashboard" element={<WalkerDashboard />} />
-            <Route path="/walker/earnings" element={<WalkerEarnings />} />
-            <Route path="/profile" element={<Profile />} />
             <Route path="/tarifs" element={<Tarifs />} />
-            
             <Route path="/messages" element={<Messages />} />
             <Route path="/blog" element={<Blog />} />
             <Route path="/blog/:slug" element={<BlogArticle />} />
             <Route path="/admin" element={<AdminDashboard />} />
-            <Route path="/referral" element={<Referral />} />
             {/* About & Regional SEO */}
             <Route path="/qui-sommes-nous" element={<QuiSommesNous />} />
             <Route path="/contact" element={<Contact />} />
