@@ -150,7 +150,7 @@
 
 ---
 
-### ⚪ PHASE 4 : FONCTIONNALITÉS AVANCÉES (0%)
+### 🔜 PHASE 4 : FONCTIONNALITÉS AVANCÉES (30%)
 
 #### 4.1 Suivi GPS Temps Réel
 | Fonctionnalité | Complexité | Status |
@@ -159,12 +159,14 @@
 | Carte live propriétaire | Haute | ⚪ |
 | Historique parcours | Moyenne | ⚪ |
 | Géofencing (zones) | Haute | ⚪ |
+| **Bouton SOS urgence** | Moyenne | ✅ Fait |
 
 #### 4.2 Calendrier & Récurrence
 | Fonctionnalité | Status |
 |---------------|--------|
-| Sync Google Calendar | ⚪ |
-| Export iCal | ⚪ |
+| **Export iCal (.ics)** | ✅ Fait |
+| **Google Calendar intégration** | ✅ Fait |
+| Sync Google Calendar bidirectionnel | ⚪ |
 | Réservations récurrentes | ⚪ |
 | Abonnements mensuel/hebdo | ⚪ |
 
@@ -184,15 +186,16 @@
 
 ---
 
-### ⚪ PHASE 5 : MOBILE & SCALE (0%)
+### 🔜 PHASE 5 : MOBILE & SCALE (40%)
 
 #### 5.1 PWA Optimisée
 | Fonctionnalité | Status |
 |---------------|--------|
-| Manifest.json complet | ⚪ |
-| Service worker cache | ⚪ |
-| Mode offline | ⚪ |
-| Install prompt | ⚪ |
+| **Manifest.json complet** | ✅ Fait |
+| **Service worker cache** | ✅ Fait |
+| **Install prompt** | ✅ Fait |
+| **Mode offline basique** | ✅ Fait |
+| Push notifications | ⚪ (config serveur requis) |
 
 #### 5.2 Application Native
 | Option | Technologie | Status |
