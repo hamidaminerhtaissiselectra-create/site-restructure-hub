@@ -1,23 +1,42 @@
 import { useEffect, useState } from "react";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
+import { useNavigate } from "react-router-dom";
+import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Calendar, Clock, CheckCircle, AlertCircle, ChevronRight } from 'lucide-react';
+import { Button } from "@/components/ui/button";
+import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { 
+  Calendar, CheckCircle, Clock, XCircle, MapPin, 
+  Dog, MessageCircle, Eye, Download, ExternalLink
+} from 'lucide-react';
 import { supabase } from "@/integrations/supabase/client";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
+import { useCalendarExport } from "@/hooks/useCalendarExport";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 
 const BookingsTab = () => {
+  const navigate = useNavigate();
   const [bookings, setBookings] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [filter, setFilter] = useState("upcoming");
+  const { exportBooking, exportBookings, openGoogleCalendar } = useCalendarExport();
 
   useEffect(() => { fetchBookings(); }, []);
 
   const fetchBookings = async () => {
     const { data: { session } } = await supabase.auth.getSession();
     if (!session) return;
-    const { data } = await supabase.from('bookings').select('*, dogs(name)').eq('owner_id', session.user.id).order('scheduled_date', { ascending: false });
+    
+    const { data } = await supabase
+      .from('bookings')
+      .select('*, dogs(name, breed, photo_url)')
+      .eq('owner_id', session.user.id)
+      .order('scheduled_date', { ascending: false });
+    
     setBookings(data || []);
     setLoading(false);
   };
@@ -31,27 +50,266 @@ const BookingsTab = () => {
     return true;
   });
 
-  if (loading) return <div className="flex justify-center py-16"><div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary" /></div>;
+  const getStatusBadge = (status: string) => {
+    const statusMap: Record<string, { label: string; variant: any; icon: any }> = {
+      pending: { label: 'En attente', variant: 'secondary', icon: Clock },
+      confirmed: { label: 'Confirmée', variant: 'default', icon: CheckCircle },
+      in_progress: { label: 'En cours', variant: 'outline', icon: MapPin },
+      completed: { label: 'Terminée', variant: 'default', icon: CheckCircle },
+      cancelled: { label: 'Annulée', variant: 'destructive', icon: XCircle }
+    };
+    const { label, variant, icon: Icon } = statusMap[status] || statusMap.pending;
+    return (
+      <Badge variant={variant} className="gap-1">
+        <Icon className="h-3 w-3" />
+        {label}
+      </Badge>
+    );
+  };
+
+  const formatDate = (dateStr: string) => {
+    const date = new Date(dateStr);
+    const now = new Date();
+    const tomorrow = new Date(now);
+    tomorrow.setDate(tomorrow.getDate() + 1);
+    
+    if (date.toDateString() === now.toDateString()) return "Aujourd'hui";
+    if (date.toDateString() === tomorrow.toDateString()) return "Demain";
+    
+    return date.toLocaleDateString('fr-FR', { 
+      weekday: 'short', 
+      day: 'numeric', 
+      month: 'short' 
+    });
+  };
+
+  const handleExportBooking = (booking: any) => {
+    exportBooking({
+      id: booking.id,
+      scheduled_date: booking.scheduled_date,
+      scheduled_time: booking.scheduled_time,
+      duration_minutes: booking.duration_minutes || 60,
+      service_type: booking.service_type,
+      dog_name: booking.dogs?.name,
+      address: booking.address,
+      city: booking.city
+    });
+  };
+
+  const handleExportAll = () => {
+    const upcomingBookings = bookings
+      .filter(b => new Date(b.scheduled_date) >= new Date() && b.status !== 'cancelled')
+      .map(b => ({
+        id: b.id,
+        scheduled_date: b.scheduled_date,
+        scheduled_time: b.scheduled_time,
+        duration_minutes: b.duration_minutes || 60,
+        service_type: b.service_type,
+        dog_name: b.dogs?.name,
+        address: b.address,
+        city: b.city
+      }));
+    exportBookings(upcomingBookings);
+  };
+
+  const handleOpenGoogleCalendar = (booking: any) => {
+    openGoogleCalendar({
+      id: booking.id,
+      scheduled_date: booking.scheduled_date,
+      scheduled_time: booking.scheduled_time,
+      duration_minutes: booking.duration_minutes || 60,
+      service_type: booking.service_type,
+      dog_name: booking.dogs?.name,
+      address: booking.address,
+      city: booking.city
+    });
+  };
+
+  if (loading) {
+    return (
+      <div className="flex justify-center py-16">
+        <motion.div 
+          className="rounded-full h-10 w-10 border-4 border-primary border-t-transparent"
+          animate={{ rotate: 360 }}
+          transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
+        />
+      </div>
+    );
+  }
 
   return (
-    <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
-      <div className="flex items-center justify-between mb-6">
-        <h2 className="text-2xl font-bold flex items-center gap-2"><Calendar className="h-6 w-6 text-primary" />Réservations</h2>
+    <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="space-y-6">
+      {/* Header */}
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+        <h2 className="text-2xl font-bold flex items-center gap-2">
+          <Calendar className="h-6 w-6 text-primary" />
+          Mes Réservations
+        </h2>
+        
+        {/* Export button */}
+        <Button 
+          variant="outline" 
+          size="sm" 
+          onClick={handleExportAll}
+          className="gap-2"
+          disabled={bookings.filter(b => new Date(b.scheduled_date) >= new Date() && b.status !== 'cancelled').length === 0}
+        >
+          <Download className="h-4 w-4" />
+          Exporter calendrier
+        </Button>
       </div>
-      <Tabs value={filter} onValueChange={setFilter} className="mb-6">
-        <TabsList><TabsTrigger value="upcoming">À venir</TabsTrigger><TabsTrigger value="past">Passées</TabsTrigger><TabsTrigger value="cancelled">Annulées</TabsTrigger></TabsList>
+
+      {/* Filters */}
+      <Tabs value={filter} onValueChange={setFilter}>
+        <TabsList className="grid grid-cols-3 w-full max-w-md">
+          <TabsTrigger value="upcoming" className="gap-1">
+            À venir
+            <Badge variant="secondary" className="ml-1 h-5 px-1.5">
+              {bookings.filter(b => new Date(b.scheduled_date) >= new Date() && b.status !== 'cancelled').length}
+            </Badge>
+          </TabsTrigger>
+          <TabsTrigger value="past">Passées</TabsTrigger>
+          <TabsTrigger value="cancelled">Annulées</TabsTrigger>
+        </TabsList>
       </Tabs>
+
+      {/* Bookings List */}
       {filtered.length === 0 ? (
-        <Card className="text-center py-12"><CardContent><Calendar className="h-12 w-12 mx-auto mb-4 text-muted-foreground/50" /><p className="text-muted-foreground">Aucune réservation</p></CardContent></Card>
+        <Card className="text-center py-12">
+          <CardContent className="pt-6">
+            <div className="w-16 h-16 rounded-full bg-muted flex items-center justify-center mx-auto mb-4">
+              <Calendar className="h-8 w-8 text-muted-foreground" />
+            </div>
+            <p className="text-lg font-medium mb-2">Aucune réservation</p>
+            <p className="text-muted-foreground text-sm mb-4">
+              {filter === 'upcoming' && "Vous n'avez pas de réservation à venir"}
+              {filter === 'past' && "Aucune réservation passée"}
+              {filter === 'cancelled' && "Aucune réservation annulée"}
+            </p>
+            {filter === 'upcoming' && (
+              <Button onClick={() => navigate('/walkers')} className="gap-2">
+                Réserver une promenade
+              </Button>
+            )}
+          </CardContent>
+        </Card>
       ) : (
-        <div className="space-y-3">{filtered.map(b => (
-          <Card key={b.id} className="hover:shadow-md transition-shadow">
-            <CardContent className="flex items-center justify-between p-4">
-              <div><p className="font-semibold">{b.dogs?.name}</p><p className="text-sm text-muted-foreground">{new Date(b.scheduled_date).toLocaleDateString('fr-FR')} à {b.scheduled_time}</p></div>
-              <div className="text-right"><Badge variant={b.status === 'completed' ? 'default' : 'secondary'}>{b.status}</Badge><p className="font-bold mt-1">{b.price}€</p></div>
-            </CardContent>
-          </Card>
-        ))}</div>
+        <div className="space-y-4">
+          <AnimatePresence>
+            {filtered.map((booking, index) => (
+              <motion.div
+                key={booking.id}
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -20 }}
+                transition={{ delay: index * 0.05 }}
+              >
+                <Card className="hover:shadow-lg transition-all duration-300 overflow-hidden">
+                  <CardContent className="p-0">
+                    {/* Main content */}
+                    <div className="flex flex-col sm:flex-row gap-4 p-4">
+                      {/* Dog info */}
+                      <div className="flex items-center gap-3 flex-1">
+                        <div className="w-14 h-14 rounded-xl bg-primary/10 flex items-center justify-center overflow-hidden flex-shrink-0">
+                          {booking.dogs?.photo_url ? (
+                            <img 
+                              src={booking.dogs.photo_url} 
+                              alt={booking.dogs?.name}
+                              className="w-full h-full object-cover"
+                            />
+                          ) : (
+                            <Dog className="h-7 w-7 text-primary" />
+                          )}
+                        </div>
+                        <div className="min-w-0 flex-1">
+                          <div className="flex items-center gap-2 flex-wrap">
+                            <p className="font-semibold text-lg">{booking.dogs?.name || "Chien"}</p>
+                            {getStatusBadge(booking.status)}
+                          </div>
+                          <p className="text-sm text-muted-foreground">
+                            {booking.service_type === 'promenade' && "Promenade"}
+                            {booking.service_type === 'garde' && "Garde"}
+                            {booking.service_type === 'visite' && "Visite"}
+                            {booking.service_type === 'veterinaire' && "Vétérinaire"}
+                          </p>
+                        </div>
+                      </div>
+
+                      {/* Date & Time */}
+                      <div className="flex flex-col items-start sm:items-end gap-1">
+                        <p className="font-semibold text-lg">
+                          {formatDate(booking.scheduled_date)}
+                        </p>
+                        <p className="text-sm text-muted-foreground flex items-center gap-1">
+                          <Clock className="h-3.5 w-3.5" />
+                          {booking.scheduled_time} • {booking.duration_minutes || 60} min
+                        </p>
+                        <p className="font-bold text-lg text-primary">
+                          {Number(booking.price || 0).toFixed(2)}€
+                        </p>
+                      </div>
+                    </div>
+
+                    {/* Location */}
+                    {booking.city && (
+                      <div className="px-4 pb-2 flex items-center gap-1.5 text-sm text-muted-foreground">
+                        <MapPin className="h-3.5 w-3.5" />
+                        {booking.address ? `${booking.address}, ` : ""}{booking.city}
+                      </div>
+                    )}
+
+                    {/* Actions */}
+                    <div className="flex items-center gap-2 p-3 bg-muted/30 border-t flex-wrap">
+                      {booking.walker_id && (
+                        <Button 
+                          size="sm" 
+                          variant="outline"
+                          onClick={() => navigate(`/messages`, { state: { selectedWalkerId: booking.walker_id }})}
+                          className="gap-1"
+                        >
+                          <MessageCircle className="h-4 w-4" />
+                          Message
+                        </Button>
+                      )}
+
+                      {/* Calendar dropdown */}
+                      {booking.status !== 'cancelled' && new Date(booking.scheduled_date) >= new Date() && (
+                        <DropdownMenu>
+                          <DropdownMenuTrigger asChild>
+                            <Button size="sm" variant="outline" className="gap-1">
+                              <Calendar className="h-4 w-4" />
+                              Calendrier
+                            </Button>
+                          </DropdownMenuTrigger>
+                          <DropdownMenuContent>
+                            <DropdownMenuItem onClick={() => handleExportBooking(booking)}>
+                              <Download className="h-4 w-4 mr-2" />
+                              Télécharger .ics
+                            </DropdownMenuItem>
+                            <DropdownMenuItem onClick={() => handleOpenGoogleCalendar(booking)}>
+                              <ExternalLink className="h-4 w-4 mr-2" />
+                              Google Calendar
+                            </DropdownMenuItem>
+                          </DropdownMenuContent>
+                        </DropdownMenu>
+                      )}
+
+                      <Button 
+                        size="sm" 
+                        variant="ghost"
+                        onClick={() => navigate(`/bookings/${booking.id}`)}
+                        className="gap-1 ml-auto"
+                      >
+                        <Eye className="h-4 w-4" />
+                        Détails
+                      </Button>
+                    </div>
+                  </CardContent>
+                </Card>
+              </motion.div>
+            ))}
+          </AnimatePresence>
+        </div>
       )}
     </motion.div>
   );

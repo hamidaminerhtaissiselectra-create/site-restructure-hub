@@ -4,7 +4,8 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route, useLocation, Navigate } from "react-router-dom";
 import { HelmetProvider } from "react-helmet-async";
-import { useEffect } from "react";
+import { useEffect, lazy, Suspense } from "react";
+import { InstallPrompt } from "@/components/pwa/InstallPrompt";
 import Index from "./pages/Index";
 import ServicePage from "./pages/ServicePage";
 import Auth from "./pages/Auth";
@@ -60,6 +61,7 @@ const App = () => (
         <Sonner />
         <BrowserRouter>
           <ScrollToTop />
+          <InstallPrompt />
           <Routes>
             <Route path="/" element={<Index />} />
             <Route path="/services/:slug" element={<ServicePage />} />
