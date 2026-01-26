@@ -10,10 +10,10 @@ import { SEOHead } from "@/components/seo/SEOHead";
 import MobileTabBar from "@/components/dashboard/shared/MobileTabBar";
 
 // Lazy load tab contents
-const WalkerOverviewTab = lazy(() => import("@/components/dashboard/walker/OverviewTab"));
+const WalkerHomeTab = lazy(() => import("@/components/dashboard/walker/WalkerHomeTab"));
 const WalkerBookingsTab = lazy(() => import("@/components/dashboard/walker/BookingsTab"));
 const WalkerMessagesTab = lazy(() => import("@/components/dashboard/walker/MessagesTab"));
-const WalkerEarningsTab = lazy(() => import("@/components/dashboard/walker/EarningsTab"));
+const WalkerFinancesTab = lazy(() => import("@/components/dashboard/walker/FinancesTab"));
 const WalkerProfileTab = lazy(() => import("@/components/dashboard/walker/ProfileTab"));
 
 // 5 onglets selon le PDF Master Plan
@@ -107,12 +107,12 @@ const WalkerDashboardPage = () => {
 
   const renderTabContent = () => {
     switch (currentTab) {
-      case "accueil": return <WalkerOverviewTab stats={stats} walkerProfile={walkerProfile} onNavigate={setCurrentTab} />;
+      case "accueil": return <WalkerHomeTab stats={stats} walkerProfile={walkerProfile} onNavigate={setCurrentTab} />;
       case "planning": return <WalkerBookingsTab />;
       case "messages": return <WalkerMessagesTab />;
-      case "gains": return <WalkerEarningsTab />;
+      case "gains": return <WalkerFinancesTab />;
       case "profil": return <WalkerProfileTab profile={profile} walkerProfile={walkerProfile} />;
-      default: return <WalkerOverviewTab stats={stats} walkerProfile={walkerProfile} onNavigate={setCurrentTab} />;
+      default: return <WalkerHomeTab stats={stats} walkerProfile={walkerProfile} onNavigate={setCurrentTab} />;
     }
   };
 

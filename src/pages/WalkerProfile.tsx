@@ -88,6 +88,12 @@ const WalkerProfilePage = () => {
   };
 
   useEffect(() => {
+    // Validate walkerId is a valid UUID before making requests
+    const uuidRegex = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
+    if (!walkerId || !uuidRegex.test(walkerId)) {
+      setLoading(false);
+      return;
+    }
     checkAuth();
     fetchWalkerProfile();
   }, [walkerId]);
@@ -102,17 +108,27 @@ const WalkerProfilePage = () => {
 
   const checkFavorite = async (userId: string) => {
     if (!walkerId) return;
+    const uuidRegex = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
+    if (!uuidRegex.test(walkerId)) return;
+    
     const { data } = await supabase
       .from('favorites')
       .select('id')
       .eq('user_id', userId)
       .eq('walker_id', walkerId)
-      .single();
+      .maybeSingle();
     setIsFavorite(!!data);
   };
 
   const fetchWalkerProfile = async () => {
     if (!walkerId) return;
+    
+    // Validate UUID format
+    const uuidRegex = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
+    if (!uuidRegex.test(walkerId)) {
+      setLoading(false);
+      return;
+    }
 
     try {
       // Fetch walker profile
