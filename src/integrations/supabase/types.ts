@@ -94,6 +94,65 @@ export type Database = {
           },
         ]
       }
+      disputes: {
+        Row: {
+          admin_notes: string | null
+          booking_id: string
+          created_at: string
+          description: string | null
+          evidence_urls: string[] | null
+          id: string
+          reason: string
+          reported_id: string
+          reporter_id: string
+          resolved_at: string | null
+          resolved_by: string | null
+          status: string
+          type: string
+          updated_at: string
+        }
+        Insert: {
+          admin_notes?: string | null
+          booking_id: string
+          created_at?: string
+          description?: string | null
+          evidence_urls?: string[] | null
+          id?: string
+          reason: string
+          reported_id: string
+          reporter_id: string
+          resolved_at?: string | null
+          resolved_by?: string | null
+          status?: string
+          type: string
+          updated_at?: string
+        }
+        Update: {
+          admin_notes?: string | null
+          booking_id?: string
+          created_at?: string
+          description?: string | null
+          evidence_urls?: string[] | null
+          id?: string
+          reason?: string
+          reported_id?: string
+          reporter_id?: string
+          resolved_at?: string | null
+          resolved_by?: string | null
+          status?: string
+          type?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "disputes_booking_id_fkey"
+            columns: ["booking_id"]
+            isOneToOne: false
+            referencedRelation: "bookings"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       dogs: {
         Row: {
           age: number | null
@@ -165,6 +224,53 @@ export type Database = {
           walker_id?: string
         }
         Relationships: []
+      }
+      incident_reports: {
+        Row: {
+          acknowledged_at: string | null
+          booking_id: string
+          description: string | null
+          id: string
+          reported_at: string
+          reporter_id: string
+          resolution_notes: string | null
+          resolved_at: string | null
+          status: string
+          type: string
+        }
+        Insert: {
+          acknowledged_at?: string | null
+          booking_id: string
+          description?: string | null
+          id?: string
+          reported_at?: string
+          reporter_id: string
+          resolution_notes?: string | null
+          resolved_at?: string | null
+          status?: string
+          type: string
+        }
+        Update: {
+          acknowledged_at?: string | null
+          booking_id?: string
+          description?: string | null
+          id?: string
+          reported_at?: string
+          reporter_id?: string
+          resolution_notes?: string | null
+          resolved_at?: string | null
+          status?: string
+          type?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "incident_reports_booking_id_fkey"
+            columns: ["booking_id"]
+            isOneToOne: false
+            referencedRelation: "bookings"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       messages: {
         Row: {
@@ -373,6 +479,59 @@ export type Database = {
           user_id?: string
         }
         Relationships: []
+      }
+      walk_proofs: {
+        Row: {
+          booking_id: string
+          caption: string | null
+          id: string
+          location_lat: number | null
+          location_lng: number | null
+          photo_type: string
+          photo_url: string
+          status: string
+          uploaded_at: string
+          validated_at: string | null
+          validated_by: string | null
+          walker_id: string
+        }
+        Insert: {
+          booking_id: string
+          caption?: string | null
+          id?: string
+          location_lat?: number | null
+          location_lng?: number | null
+          photo_type?: string
+          photo_url: string
+          status?: string
+          uploaded_at?: string
+          validated_at?: string | null
+          validated_by?: string | null
+          walker_id: string
+        }
+        Update: {
+          booking_id?: string
+          caption?: string | null
+          id?: string
+          location_lat?: number | null
+          location_lng?: number | null
+          photo_type?: string
+          photo_url?: string
+          status?: string
+          uploaded_at?: string
+          validated_at?: string | null
+          validated_by?: string | null
+          walker_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "walk_proofs_booking_id_fkey"
+            columns: ["booking_id"]
+            isOneToOne: false
+            referencedRelation: "bookings"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       walker_badges: {
         Row: {

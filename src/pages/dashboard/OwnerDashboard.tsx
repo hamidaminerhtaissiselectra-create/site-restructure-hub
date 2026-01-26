@@ -14,7 +14,7 @@ import MobileTabBar from "@/components/dashboard/shared/MobileTabBar";
 const HomeTab = lazy(() => import("@/components/dashboard/owner/HomeTab"));
 const MissionsTab = lazy(() => import("@/components/dashboard/owner/MissionsTab"));
 const MessagesTab = lazy(() => import("@/components/dashboard/owner/MessagesTab"));
-const ReferralTab = lazy(() => import("@/components/dashboard/owner/ReferralTab"));
+const FinancesTab = lazy(() => import("@/components/dashboard/owner/FinancesTab"));
 const ProfileTab = lazy(() => import("@/components/dashboard/owner/ProfileTab"));
 
 // 5 onglets selon le PDF Master Plan
@@ -116,7 +116,7 @@ const OwnerDashboard = () => {
       case "messages":
         return <MessagesTab />;
       case "finances":
-        return <ReferralTab />;
+        return <FinancesTab />;
       case "profil":
         return <ProfileTab profile={profile} />;
       default:

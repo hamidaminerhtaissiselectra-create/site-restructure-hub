@@ -5,13 +5,14 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { User, Shield, Bell, LogOut, Camera, MapPin, Settings, FileText } from 'lucide-react';
+import { User, Shield, Bell, LogOut, Camera, MapPin, Settings, FileText, Dog } from 'lucide-react';
 import { supabase } from "@/integrations/supabase/client";
 import { useNavigate } from "react-router-dom";
 import { toast } from "@/hooks/use-toast";
 import { motion } from "framer-motion";
 import AdvancedSettings from "@/components/dashboard/shared/AdvancedSettings";
 import AvatarUpload from "@/components/dashboard/shared/AvatarUpload";
+import DogsSection from "@/components/dashboard/owner/DogsSection";
 
 interface ProfileTabProps { 
   profile: any; 
@@ -93,6 +94,10 @@ const ProfileTab = ({ profile }: ProfileTabProps) => {
           <TabsTrigger value="profile" className="gap-2 rounded-lg">
             <User className="h-4 w-4" />
             Profil
+          </TabsTrigger>
+          <TabsTrigger value="dogs" className="gap-2 rounded-lg">
+            <Dog className="h-4 w-4" />
+            Mes chiens
           </TabsTrigger>
           <TabsTrigger value="settings" className="gap-2 rounded-lg">
             <Settings className="h-4 w-4" />
@@ -183,6 +188,10 @@ Par exemple:
               </CardContent>
             </Card>
           </div>
+        </TabsContent>
+
+        <TabsContent value="dogs">
+          <DogsSection />
         </TabsContent>
 
         <TabsContent value="settings">
